@@ -14,7 +14,7 @@ const NOTIFY = true; // false = não enviar emails de aviso
 const MAX_FILE_MB = 5;
 const HEADERS = [
   'Data', 'Referência', 'Estado', 'Nome', 'Telefone', 'Email', 'Ilha', 'Endereço',
-  'Itens', 'Subtotal (€)', 'Envio (€)', 'Total (€)', 'Aceita campanhas', 'Comprovativo',
+  'Itens', 'Subtotal (CVE)', 'Envio (CVE)', 'Total (CVE)', 'Aceita campanhas', 'Comprovativo',
 ];
 const COL = Object.fromEntries(HEADERS.map((h, i) => [h, i + 1]));
 
@@ -28,18 +28,13 @@ function doPost(e) {
 
     if (d.action === 'order') {
       if (!d.ref || !d.name || !d.phone) return json_({ ok: false, error: 'dados em falta' });
-      sh.appendRow([
-        new Date(), clean_(d.ref), 'Aguarda pagamento', clean_(d.name), clean_(d.phone),
-        clean_(d.email), clean_(d.island), clean_(d.address), clean_(d.items),
-        num_(d.subtotal), num_(d.shipping), num_(d.total), d.marketing ? 'Sim' : 'Não', '',
-      ]);
-      notify_(`Novo pedido ${d.ref} — €${num_(d.total)}`,
-        `${d.name} · ${d.phone} · ${d.island}\n${d.address}\n\n${d.items}\n\nTotal: €${num_(d.total)}\n\n${sh.getParent().getUrl()}`);
+      if (!findRow_(sh, d.ref)) addOrder_(sh, d);
       return json_({ ok: true });
     }
 
     if (d.action === 'proof') {
-      const row = findRow_(sh, d.ref);
+      let row = findRow_(sh, d.ref);
+      if (!row && d.ref && d.name) { addOrder_(sh, d); row = findRow_(sh, d.ref); } // pedido não tinha sido guardado
       if (!row) return json_({ ok: false, error: 'pedido não encontrado' });
       const f = d.file || {};
       if (!/^image\/|^application\/pdf$/.test(f.type || '')) return json_({ ok: false, error: 'tipo de ficheiro' });
@@ -73,6 +68,25 @@ function doGet() {
 }
 
 // ---------- utilitários ----------
+function addOrder_(sh, d) {
+  sh.appendRow([
+    new Date(), clean_(d.ref), 'Aguarda pagamento', clean_(d.name), clean_(d.phone),
+    clean_(d.email), clean_(d.island), clean_(d.address), clean_(d.items),
+    num_(d.subtotal), num_(d.shipping), num_(d.total), d.marketing ? 'Sim' : 'Não', '',
+  ]);
+  notify_(`Novo pedido ${d.ref} — ${num_(d.total)} CVE`,
+    `${d.name} · ${d.phone} · ${d.island}\n${d.address}\n\n${d.items}\n\nTotal: ${num_(d.total)} CVE\n\n${sh.getParent().getUrl()}`);
+}
+
+// Execute esta função UMA vez no editor (botão ▶ Executar) para autorizar
+// o acesso à folha, ao Drive e ao email antes de publicar.
+function autorizar() {
+  sheet_();
+  folder_();
+  MailApp.getRemainingDailyQuota();
+  Logger.log('Autorizado. Agora: Implementar → Gerir implementações → ✏️ → Nova versão.');
+}
+
 function sheet_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let sh = ss.getSheetByName(SHEET_NAME);

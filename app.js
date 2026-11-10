@@ -4,7 +4,9 @@
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const main = $("#main");
-  const fmt = (n) => `${S.currency}${n.toFixed(2).replace(".", ",")}`;
+  // escudos: sem casas decimais, ponto nos milhares → "2.750 CVE"
+  const num = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  const fmt = (n) => `${num(n)} ${S.currency}`;
   const minPrice = Math.min(...S.sizes.map((s) => s.price));
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
@@ -216,7 +218,11 @@
   const subtotal = () => cart.reduce((s, x) => s + S.sizes[x.size].price * x.qty, 0);
   const cartSig = () => JSON.stringify(cart.map((x) => [x.slug, x.size, x.qty]));
   const itemsText = (items) => items.map((x) => `${x.qty}x ${x.title} (${x.size}) — ${fmt(x.total)}`).join("\n");
-  const newRef = () => "IC-" + (Date.now().toString(36).slice(-4) + Math.random().toString(36).slice(2, 4)).toUpperCase();
+  // referência fácil de escrever no descritivo da transferência: PRIMEIRO NOME + 3 dígitos → "MARIA-482"
+  const newRef = (name) => {
+    const first = String(name || "").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z]/g, " ").trim().split(/\s+/)[0] || "ICARUS";
+    return `${first.toUpperCase().slice(0, 10)}-${100 + Math.floor(Math.random() * 900)}`;
+  };
   const waLink = (msg) => `https://wa.me/${S.whatsapp}?text=${encodeURIComponent(msg)}`;
   const ICON = {
     copy: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"/><path d="M5 15V5a1 1 0 0 1 1-1h9"/></svg>`,
@@ -229,12 +235,22 @@
     if (!hasDB()) return { ok: false, skipped: true };
     try {
       const r = await fetch(PAY.ordersEndpoint, { method: "POST", body: JSON.stringify(payload) });
-      return await r.json();
+      const txt = await r.text();
+      try { return JSON.parse(txt); }
+      catch { // o Google devolveu uma página de erro em vez de JSON (script mal publicado)
+        const m = txt.match(/Função de script não encontrada: \w+|Script function not found: \w+/);
+        console.warn("Base de dados: resposta inválida.", m ? m[0] : txt.slice(0, 200));
+        return { ok: false, error: "servidor" };
+      }
     } catch (err) {
       console.warn("Base de dados indisponível:", err);
-      return { ok: false };
+      return { ok: false, error: "rede" };
     }
   }
+  // dados do pedido enviados junto com o comprovativo (cria a linha se o pedido ainda não existir)
+  const orderPayload = (o) => ({
+    ref: o.ref, ...o.customer, items: itemsText(o.items), subtotal: o.subtotal, shipping: o.shipping, total: o.total,
+  });
 
   async function copyText(text, btn) {
     try { await navigator.clipboard.writeText(text); }
@@ -341,12 +357,9 @@
       err.textContent = "";
       const customer = { name: f.name.trim(), phone: f.phone.trim(), email: f.email.trim(), island: f.island, address: f.address.trim(), marketing: !!f.marketing };
       store.set("icarus-customer", customer);
-      const order = { ...o, ref: newRef(), customer, sig: cartSig(), created: new Date().toISOString() };
+      const order = { ...o, ref: newRef(customer.name), customer, sig: cartSig(), created: new Date().toISOString() };
       const btn = $("button[type=submit]", form); btn.disabled = true; btn.textContent = "A guardar…";
-      await sendDB({
-        action: "order", website: f.website, ref: order.ref, ...customer,
-        items: itemsText(order.items), subtotal: order.subtotal, shipping: order.shipping, total: order.total,
-      });
+      await sendDB({ action: "order", website: f.website, ...orderPayload(order) });
       store.set("icarus-order", order);
       checkoutPay(order);
       window.scrollTo(0, 0);
@@ -368,7 +381,7 @@
           <p class="co-lead">Faz uma transferência de <strong>${fmt(o.total)}</strong> para a conta abaixo e indica a referência <strong>${o.ref}</strong> no descritivo.</p>
           ${bankReady() ? `
           <div class="bank">
-            ${row(`Valor (${S.currency})`, o.total.toFixed(2).replace(".", ","), true)}
+            ${row(`Valor (${S.currency})`, String(Math.round(o.total)), true)}
             ${row("Referência", o.ref, true)}
             ${BANK_FIELDS.map(([k, l]) => row(l, String(PAY.bank[k]).trim(), k !== "holder" && k !== "bank")).join("")}
           </div>` : `
@@ -404,9 +417,11 @@
     if (!hasDB()) return;
     const input = $("[data-file]", main), up = $("[data-upload]", main), uerr = $("[data-up-error]", main);
     let file = null;
+    const kind = (f) => /^image\//.test(f.type) || /\.(jpe?g|png|webp|heic|heif|gif)$/i.test(f.name) ? "image"
+      : f.type === "application/pdf" || /\.pdf$/i.test(f.name) ? "pdf" : "";
     input.addEventListener("change", () => {
       file = input.files[0] || null; uerr.textContent = "";
-      if (file && !/^image\/|^application\/pdf$/.test(file.type)) { file = null; uerr.textContent = "Usa uma imagem ou um PDF."; }
+      if (file && !kind(file)) { file = null; uerr.textContent = "Usa uma imagem ou um PDF."; }
       else if (file && file.size > 5 * 1024 * 1024) { file = null; uerr.textContent = "O ficheiro tem mais de 5 MB."; }
       $("[data-drop-txt]", main).innerHTML = file ? `<strong>${esc(file.name)}</strong><br>${(file.size / 1024 / 1024).toFixed(1)} MB · toca para trocar` : `<strong>Carregar comprovativo</strong><br>Foto ou PDF, até 5 MB`;
       $("[data-drop]", main).classList.toggle("has-file", !!file);
@@ -415,12 +430,31 @@
     up.addEventListener("click", async () => {
       if (!file) return;
       up.disabled = true; up.textContent = "A enviar…"; uerr.textContent = "";
-      const data = await new Promise((res) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1]); r.readAsDataURL(file); });
-      const res = await sendDB({ action: "proof", ref: o.ref, file: { name: file.name, type: file.type, data } });
+      const payload = await prepareFile(file, kind(file));
+      const res = await sendDB({ action: "proof", ...orderPayload(o), file: payload });
       if (res && res.ok) return finish(o, "upload");
       up.disabled = false; up.textContent = "Enviar comprovativo";
-      uerr.textContent = "Não foi possível enviar. Tenta de novo ou envia pelo WhatsApp.";
+      uerr.textContent = res && res.error === "rede"
+        ? "Sem ligação à internet. Verifica a rede e tenta de novo, ou envia pelo WhatsApp."
+        : "Não foi possível guardar o comprovativo agora. Envia-o pelo WhatsApp (botão abaixo) — o teu pedido fica igual.";
     });
+  }
+
+  // lê o ficheiro em base64; fotos são reduzidas para no máx. 1600 px (JPEG) para o envio ser rápido
+  const readB64 = (blob) => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1]); r.onerror = rej; r.readAsDataURL(blob); });
+  async function prepareFile(f, k) {
+    const base = { name: f.name || "comprovativo", type: f.type || (k === "pdf" ? "application/pdf" : "image/jpeg") };
+    if (k === "image") {
+      try {
+        const bmp = await createImageBitmap(f);
+        const sc = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+        const c = Object.assign(document.createElement("canvas"), { width: Math.round(bmp.width * sc), height: Math.round(bmp.height * sc) });
+        c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+        const jpg = await new Promise((res) => c.toBlob(res, "image/jpeg", 0.85));
+        if (jpg) return { name: base.name.replace(/\.\w+$/, "") + ".jpg", type: "image/jpeg", data: await readB64(jpg) };
+      } catch {} // formato que o navegador não abre (ex.: HEIC) → envia o original
+    }
+    return { ...base, data: await readB64(f) };
   }
 
   // ---------- passo 3: concluído ----------

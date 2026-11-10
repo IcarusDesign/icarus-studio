@@ -45,18 +45,23 @@ Os comprovativos ficam numa pasta do Google Drive. Recebe um email a cada pedido
 1. Em https://sheets.google.com crie uma folha nova chamada **Icarus — Pedidos**.
 2. Menu **Extensões → Apps Script**.
 3. Apague o código que aparece e cole todo o conteúdo de
-   `google-apps-script/Code.gs`. Clique em **Guardar** (ícone de disquete).
-4. Clique em **Implementar → Nova implementação**.
+   `google-apps-script/Code.gs`. Clique em **Guardar** (ícone de disquete) —
+   o nome do ficheiro deixa de ter o ponto/asterisco de "não guardado".
+4. Na barra de cima, escolha a função **autorizar** e clique em **▶ Executar**.
+   Autorize com a sua conta Google. Isto dá acesso à folha, ao Drive e ao email.
+5. Clique em **Implementar → Nova implementação**.
    - Tipo (ícone ⚙️): **App da Web**
    - Executar como: **Eu**
    - Quem tem acesso: **Qualquer pessoa**
    - Clique em **Implementar** e autorize com a sua conta Google
      (em "Google não verificou esta app": *Avançadas → Aceder a … (não seguro)* —
      é normal, a app é sua).
-5. Copie o **URL da app da Web** (termina em `/exec`).
-6. Em `pagamento.js`, cole-o em `ordersEndpoint: "…"`, guarde e publique.
+6. Copie o **URL da app da Web** (termina em `/exec`).
+7. Em `pagamento.js`, cole-o em `ordersEndpoint: "…"`, guarde e publique.
 
-Teste: faça um pedido no site e veja a linha nova aparecer na folha.
+Teste: abra o URL no navegador — tem de aparecer `{"ok":true,"service":"Icarus Studio — pedidos"}`.
+Se aparecer "Função de script não encontrada: doPost", o código não foi guardado antes de publicar
+(repita os passos 3 e "Se alterar o Code.gs depois").
 
 **Campanhas:** filtre a coluna *Aceita campanhas = Sim* para ter a lista de
 contactos que autorizaram receber novidades. Só envie campanhas a essas pessoas.

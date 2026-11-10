@@ -7,19 +7,19 @@
 // ============================================================
 window.SITE = {
   brand: "ICARUS",
-  currency: "€",
+  currency: "CVE",                // escudo cabo-verdiano
   whatsapp: "2389893666",          // (+238) 989 36 66
   instagram: "https://instagram.com/icarus_studios7",
   threads: "https://www.threads.net/@icarus_studios7",
   email: "herminiltonmiranda12@gmail.com",
   phone: "+2389893666",            // botão "Ligar" no checkout
-  shipping: 3,                     // envio fixo para todas as ilhas (€)
+  shipping: 330,                   // envio fixo para todas as ilhas (CVE)
   deliveryDays: 7,                 // prazo de entrega
   islands: ["Santiago", "São Vicente", "Santo Antão", "São Nicolau", "Sal", "Boa Vista", "Maio", "Fogo", "Brava"],
   sizes: [
-    { label: "A4 / 21x30 cm", price: 25 },
-    { label: "A3 / 30x42 cm", price: 40 },
-    { label: "50x70 cm",      price: 65 },
+    { label: "A4 / 21x30 cm", price: 2750 },
+    { label: "A3 / 30x42 cm", price: 4400 },
+    { label: "50x70 cm",      price: 7150 },
   ],
 };
 
