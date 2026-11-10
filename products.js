@@ -18,8 +18,10 @@ window.SITE = {
 };
 
 window.PRODUCTS = [
+  { slug: "raiz",            title: "Raiz",            colors: ["#F7B21B", "#E8620C"] },
+  { slug: "kampion",         title: "Kampion",         colors: ["#1E3FA8", "#F9C80E"] },
+  { slug: "noites",          title: "Noites",          colors: ["#F9A825", "#6A2C91"] },
   { slug: "sol-di-praia",    title: "Sol di Praia",    colors: ["#B9B2A6", "#B3141B"] },
-  { slug: "status",          title: "Status",          colors: ["#BDBDBD", "#C62828"] },
   { slug: "flor-di-terra",   title: "Flor di Terra",   colors: ["#F57C00", "#FFE0B2"] },
   { slug: "kauboi-kriol",    title: "Kauboi Kriol",    colors: ["#F2D7A7", "#3B2A20"] },
   { slug: "passada",         title: "Passada",         colors: ["#1E4FD8", "#0B1E5B"] },
@@ -28,10 +30,8 @@ window.PRODUCTS = [
   { slug: "pustura", title: "Pustura",            colors: ["#0F4C45", "#D4A017"] },
   { slug: "sentimento", title: "Sentimento",           colors: ["#0B3D33", "#E0E0E0"] },
   { slug: "janela",          title: "Janela",          colors: ["#F9A825", "#6D4C41"] },
-  { slug: "kampion",         title: "Kampion",         colors: ["#1E3FA8", "#F9C80E"] },
   { slug: "sab-boy", title: "Sab Boy",            colors: ["#EFE6D2", "#C1440E"] },
   { slug: "e-22", title: "E-22",           colors: ["#F4E9DC", "#1E5AA8"] },
-  { slug: "raiz",            title: "Raiz",            colors: ["#F7B21B", "#E8620C"] },
-  { slug: "noites",          title: "Noites",          colors: ["#F9A825", "#6A2C91"] },
   { slug: "irmandade",       title: "Irmandade",       colors: ["#D6D2CB", "#3A3530"] },
+  { slug: "status",          title: "Status",          colors: ["#BDBDBD", "#C62828"] },
 ].map((p) => ({ image: `images/art/${p.slug}.webp`, ...p }));
