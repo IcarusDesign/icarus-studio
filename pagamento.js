@@ -6,11 +6,11 @@
 // ============================================================
 window.PAYMENT = {
   bank: {
-    holder:  "",   // "Herminilton"
-    bank:    "",   // "Bcn"
-    account: "",   // "7936959"
-    nib:     "",   // "0004 0000 07936959101 54"
-    iban:    "",   // "CV64 0004 0000 7936 9591 0154"
+    holder:  "Herminilton",   // Nome do Titular
+    bank:    "BCN",   // BANCO
+    account: "7936959",   // NUMERO DA CONTA
+    nib:     "0004 0000 07936959101 54",   // NIB
+    iban:    "CV64 0004 0000 7936 9591 0154",   // IBAN
   },
 
   // URL da "App da Web" do Google Apps Script (ver LEIA-ME.md, secção
