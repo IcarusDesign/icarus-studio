@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ICARUS STUDIO</title>
+  <meta name="description" content="Icarus Studio — Branding & Ilustração Digital. Prints de arte feitos em Praia, Cabo Verde, enviados para todo o mundo.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Saltar para o conteúdo</a>
+
+  <!-- ================= HEADER ================= -->
+  <header class="header">
+    <a href="#/" class="logo" aria-label="Icarus Studio — início">
+      <span class="logo__mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40"><defs><radialGradient id="lg" cx="50%" cy="35%" r="70%"><stop offset="0" stop-color="#FFB81C"/><stop offset="1" stop-color="#F0480C"/></radialGradient></defs><circle cx="20" cy="20" r="20" fill="url(#lg)"/><path d="M20 26c-2-3-6-5-12-6 4-1 8 0 10 2-1-3-4-6-8-8 5 0 8 3 10 7 2-4 5-7 10-7-4 2-7 5-8 8 2-2 6-3 10-2-6 1-10 3-12 6z" fill="#fff"/></svg>
+      </span>
+      <span class="logo__word">ICARUS</span><span class="logo__studio">STUDIO</span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#/" data-nav="home">Início</a>
+      <a href="#/about" data-nav="about">Sobre</a>
+    </nav>
+    <div class="header__right">
+      <button class="lang" type="button" aria-label="Idioma">PT</button>
+      <button class="cart-btn" type="button" aria-label="Abrir carrinho" data-open-cart>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 8h12l-1 13H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span class="cart-btn__count" data-cart-count>0</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1"></main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="footer__news">
+      <h2 class="footer__title">Subscreve a newsletter!</h2>
+      <form class="news-form" data-news>
+        <label class="sr-only" for="news-email">Email</label>
+        <input id="news-email" type="email" required placeholder="Email">
+        <button type="submit">Enviar</button>
+      </form>
+      <p class="footer__note" data-news-msg>Recebe primeiro os novos drops, prints limitados e ofertas exclusivas.</p>
+    </div>
+    <div class="footer__cols">
+      <div>
+        <h3>Menu</h3>
+        <a href="#/">Início</a>
+        <a href="#/about">Sobre</a>
+      </div>
+      <div>
+        <h3>Redes</h3>
+        <a data-link="instagram" target="_blank" rel="noopener">Instagram</a>
+        <a data-link="threads" target="_blank" rel="noopener">Threads</a>
+      </div>
+      <div>
+        <h3>Info</h3>
+        <a href="#/about">Encomendas personalizadas</a>
+        <a href="#/shipping">Envios</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span data-year></span> ICARUS STUDIO</span>
+      <span>Praia, Cabo Verde · Atendimento Global</span>
+    </div>
+  </footer>
+
+  <!-- ================= SELO GIRATÓRIO ================= -->
+  <div class="badge" data-badge>
+    <button class="badge__close" type="button" aria-label="Fechar" data-badge-close>×</button>
+    <svg class="badge__ring" viewBox="0 0 200 200" aria-hidden="true">
+      <defs><path id="circ" d="M100,100 m-72,0 a72,72 0 1,1 144,0 a72,72 0 1,1 -144,0"/></defs>
+      <text><textPath href="#circ">ENVIO MUNDIAL • WORLDWIDE SHIPPING • </textPath></text>
+    </svg>
+    <span class="badge__center">IS</span>
+  </div>
+
+  <!-- ================= CARRINHO ================= -->
+  <div class="drawer-bg" data-close-cart hidden></div>
+  <aside class="drawer" aria-label="Carrinho" aria-hidden="true">
+    <div class="drawer__head">
+      <h2>Carrinho</h2>
+      <button type="button" aria-label="Fechar carrinho" data-close-cart>×</button>
+    </div>
+    <div class="drawer__items" data-cart-items></div>
+    <div class="drawer__foot">
+      <div class="drawer__total"><span>Total</span><span data-cart-total>€0</span></div>
+      <button class="btn-black" type="button" data-checkout>Finalizar pedido via WhatsApp</button>
+      <p class="drawer__hint">Confirmamos o pagamento e o envio contigo diretamente.</p>
+    </div>
+  </aside>
+
+  <!-- ================= COOKIES ================= -->
+  <div class="cookies" data-cookies hidden>
+    <p>Este site usa cookies para garantir a melhor experiência no teu dispositivo.</p>
+    <div>
+      <button class="btn-black btn-sm" type="button" data-cookie="1">Aceitar</button>
+      <button class="btn-line btn-sm" type="button" data-cookie="0">Recusar</button>
+    </div>
+  </div>
+
+  <script src="products.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
