@@ -16,5 +16,5 @@ window.PAYMENT = {
   // URL da "App da Web" do Google Apps Script (ver LEIA-ME.md, secção
   // "Base de dados de pedidos"). Enquanto estiver vazio, os pedidos
   // NÃO são guardados e o comprovativo só pode ser enviado pelo WhatsApp.
-  ordersEndpoint: "",
+  ordersEndpoint: "https://script.google.com/macros/s/AKfycbwwUZ7bKPpg5atHYWSEYbjW3lHC1IicjNXZm1cdEPenc1Zag_43rUEt4axY0GM7lrmT/exec",
 };
