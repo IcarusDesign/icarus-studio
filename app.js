@@ -218,7 +218,7 @@
   }
 
   // ---------- carrinho ----------
-  let cart = store.get("icarus-cart", []);
+  let cart = store.get("icarus-cart", []).filter((x) => P.some((p) => p.slug === x.slug) && S.sizes[x.size]);
   const drawer = $(".drawer"), bg = $(".drawer-bg");
   function saveCart() { store.set("icarus-cart", cart); renderCart(); }
   function addToCart(slug, size) {
