@@ -243,8 +243,9 @@
         return { ok: false, error: "servidor" };
       }
     } catch (err) {
+      // sem internet → "rede"; com internet, o erro vem do servidor (ex.: script do Google mal publicado → bloqueio CORS)
       console.warn("Base de dados indisponível:", err);
-      return { ok: false, error: "rede" };
+      return { ok: false, error: navigator.onLine === false ? "rede" : "servidor" };
     }
   }
   // dados do pedido enviados junto com o comprovativo (cria a linha se o pedido ainda não existir)
