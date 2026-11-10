@@ -78,6 +78,20 @@ main { outline: none; min-height: 70vh; }
 .card__title { margin: 14px 0 0; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .02em; }
 .card__price { margin: 2px 0 0; font-size: 12px; }
 
+/* tags de edição limitada */
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.tag { display: inline-flex; align-items: center; gap: 5px; border: 1px solid #000; padding: 3px 8px 2px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; line-height: 1.4; }
+.tag--count { background: #000; color: #fff; }
+.tag--out { background: var(--accent); border-color: var(--accent); color: #fff; }
+.card.is-out .print { filter: grayscale(1); opacity: .7; }
+.edition { margin: -6px 0 18px; }
+.edition .tags { margin: 0 0 10px; }
+.edition .tag { font-size: 11px; padding: 4px 10px 3px; }
+.edition__text { font-size: 13px; margin: 0 0 8px; }
+.edition__bar { height: 4px; background: #bcbcbc; max-width: 320px; }
+.edition__bar span { display: block; height: 100%; background: var(--accent); }
+.btn-black:disabled { background: #888; cursor: not-allowed; }
+
 .ph { display: grid; place-items: end start; padding: 10%; color: #fff; font-family: var(--display); font-weight: 800; font-size: clamp(14px, 2vw, 22px); line-height: 1; text-transform: uppercase; }
 
 .view-all { display: flex; justify-content: center; padding: 0 0 80px; }

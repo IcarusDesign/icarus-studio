@@ -21,11 +21,23 @@
   }
   const print = (p) => `<div class="print">${art(p)}</div>`;
 
+  // ---------- edição limitada ----------
+  const soldOut = (p) => p.edition && p.left <= 0;
+  const SIGN = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 17c3-1 4-6 6-6s0 5 2 5 3-4 5-4 2 3 5 3"/><path d="M3 21h18"/></svg>`;
+  const tags = (p) => !p.edition ? "" : `
+    <div class="tags">
+      ${soldOut(p)
+        ? `<span class="tag tag--out">Esgotado</span>`
+        : `<span class="tag tag--count" title="Restam ${p.left} de ${p.edition} cópias">Restam ${p.left}/${p.edition}</span>`}
+      <span class="tag">${SIGN}Autografado</span>
+    </div>`;
+
   const card = (p) => `
-    <a class="card reveal" href="#/p/${p.slug}">
+    <a class="card reveal${soldOut(p) ? " is-out" : ""}" href="#/p/${p.slug}">
       <div class="card__frame">${print(p)}</div>
       <h3 class="card__title">${esc(p.title)}</h3>
       <p class="card__price">Desde ${fmt(minPrice)}</p>
+      ${tags(p)}
     </a>`;
 
   // ---------- views ----------
@@ -48,6 +60,12 @@
           <div class="product__block">
             <nav class="crumbs" aria-label="Navegação"><a href="#/">Início</a><span>/</span><a href="#/">Coleção</a><span>/</span><span>${esc(p.title)}</span></nav>
             <h1 class="product__title">${esc(p.title)}</h1>
+            ${p.edition ? `
+            <div class="edition">
+              ${tags(p)}
+              <p class="edition__text">Edição limitada de <strong>${p.edition} cópias</strong>, autografadas pelo autor. ${soldOut(p) ? "Esta edição está esgotada." : `Restam apenas <strong>${p.left}</strong>.`}</p>
+              <div class="edition__bar" role="img" aria-label="Restam ${Math.max(p.left, 0)} de ${p.edition} cópias"><span style="width:${Math.max(0, Math.min(100, (p.left / p.edition) * 100))}%"></span></div>
+            </div>` : ""}
             <p class="product__ship">Portes não incluídos, segundo a tarifa dos Correios. <a href="#/envios">Envio</a></p>
             <p class="product__price" data-price>${fmt(S.sizes[0].price)}</p>
             <p class="label">Escolhe o tamanho</p>
@@ -56,10 +74,10 @@
             </div>
           </div>
           <div class="product__block">
-            <button class="btn-black" type="button" data-add>Adicionar ao carrinho — ${fmt(S.sizes[0].price)}</button>
+            <button class="btn-black" type="button" data-add ${soldOut(p) ? "disabled" : ""}>${soldOut(p) ? "Esgotado" : `Adicionar ao carrinho — ${fmt(S.sizes[0].price)}`}</button>
             <div class="acc">
               <details><summary>Papel</summary><p>Papel de arte mate de 300 g/m², com textura suave e cores ricas e duradouras.</p></details>
-              <details><summary>Detalhes</summary><p>Edição aberta — sem limite de quantidade, mas impressa com o mesmo cuidado. Cada print leva a assinatura digital do artista integrada na obra.</p></details>
+              <details><summary>Detalhes</summary><p>${p.edition ? `Edição limitada de ${p.edition} cópias. Cada print é autografado pelo autor. Quando a edição esgota, esta arte não volta a ser impressa neste formato.` : "Cada print é autografado pelo autor."}</p></details>
               <details><summary>Nota</summary><p>Cada print inclui uma margem branca (2–4 cm consoante o tamanho), já incluída nas medidas totais. Facilita o manuseamento e a moldura sem cortar a arte.</p></details>
               <details><summary>Envio</summary><p>Enviamos para todas as ilhas de Cabo Verde. O custo de envio não está incluído no preço: depende da tarifa dos Correios e é confirmado contigo pelo WhatsApp antes do pagamento.</p></details>
               <details><summary>Devoluções</summary><p>Cada print é feito por encomenda, por isso todas as vendas são finais e não há reembolsos. Ver <a href="#/reembolso">Política de Reembolso</a>.</p></details>
@@ -76,9 +94,9 @@
       sel = +b.dataset.size;
       $$(".size", main).forEach((x) => x.setAttribute("aria-pressed", x === b));
       $("[data-price]", main).textContent = fmt(S.sizes[sel].price);
-      $("[data-add]", main).textContent = `Adicionar ao carrinho — ${fmt(S.sizes[sel].price)}`;
+      if (!soldOut(p)) $("[data-add]", main).textContent = `Adicionar ao carrinho — ${fmt(S.sizes[sel].price)}`;
     }));
-    $("[data-add]", main).addEventListener("click", () => { addToCart(p.slug, sel); openCart(); });
+    $("[data-add]", main).addEventListener("click", () => { if (addToCart(p.slug, sel)) openCart(); });
   }
 
   function viewAbout() {
@@ -90,7 +108,7 @@
           <p>Somos a Icarus Studio, um estúdio de branding e ilustração digital nascido na Praia, Cabo Verde.</p>
           <p>O nosso trabalho junta retrato, cor e cultura: rostos construídos em planos de cor, texturas quentes e referências que reconheces — da música kriola ao desporto, da rua às capas de festival. Cada peça celebra a identidade cabo-verdiana e africana com uma linguagem gráfica contemporânea.</p>
           <p>Essas obras não ficam só no ecrã. Ganham vida como prints — feitos para viver numa parede, com qualidade à altura da arte. É aqui que uma imagem deixa de ser só uma imagem e passa a ser algo teu.</p>
-          <p>Tudo sai nos nossos termos: drops limitados, edições abertas e trabalhos por encomenda, enviados para todas as ilhas de Cabo Verde.</p>
+          <p>Tudo sai nos nossos termos: edições limitadas e autografadas pelo autor, e trabalhos por encomenda, enviados para todas as ilhas de Cabo Verde.</p>
           <h2>Serviços</h2>
           <ul class="services">
             <li><span>Branding & Identidade Visual</span><span>01</span></li>
@@ -218,13 +236,32 @@
   }
 
   // ---------- carrinho ----------
-  let cart = store.get("icarus-cart", []).filter((x) => P.some((p) => p.slug === x.slug) && S.sizes[x.size]);
+  const prod = (slug) => P.find((p) => p.slug === slug);
+  let cart = store.get("icarus-cart", []).filter((x) => { const p = prod(x.slug); return p && S.sizes[x.size] && !soldOut(p); });
   const drawer = $(".drawer"), bg = $(".drawer-bg");
   function saveCart() { store.set("icarus-cart", cart); renderCart(); }
+  // cópias desta arte já no carrinho (todos os tamanhos contam para a mesma edição)
+  const inCart = (slug) => cart.filter((x) => x.slug === slug).reduce((s, x) => s + x.qty, 0);
+  function canAdd(slug) {
+    const p = prod(slug);
+    if (!p.edition) return true;
+    if (inCart(slug) < p.left) return true;
+    toast(p.left === 1 ? "Só resta 1 cópia desta arte." : `Só restam ${p.left} cópias desta arte.`);
+    return false;
+  }
   function addToCart(slug, size) {
+    if (!canAdd(slug)) return false;
     const it = cart.find((x) => x.slug === slug && x.size === size);
     it ? it.qty++ : cart.push({ slug, size, qty: 1 });
     saveCart();
+    return true;
+  }
+  let toastT;
+  function toast(msg) {
+    let t = $(".toast");
+    if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.append(t); }
+    t.textContent = msg; t.classList.add("is-on");
+    clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("is-on"), 2600);
   }
   function renderCart() {
     const n = cart.reduce((s, x) => s + x.qty, 0);
@@ -249,7 +286,11 @@
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCart(); });
   $("[data-cart-items]").addEventListener("click", (e) => {
     const q = e.target.closest("[data-q]"), r = e.target.closest("[data-rm]");
-    if (q) { const it = cart[+q.dataset.q]; it.qty += +q.dataset.d; if (it.qty < 1) cart.splice(+q.dataset.q, 1); saveCart(); }
+    if (q) {
+      const it = cart[+q.dataset.q], d = +q.dataset.d;
+      if (d > 0 && !canAdd(it.slug)) return;
+      it.qty += d; if (it.qty < 1) cart.splice(+q.dataset.q, 1); saveCart();
+    }
     if (r) { cart.splice(+r.dataset.rm, 1); saveCart(); }
   });
   $("[data-checkout]").addEventListener("click", () => {

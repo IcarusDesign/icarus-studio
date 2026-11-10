@@ -1,6 +1,8 @@
 // ============================================================
 //  CATÁLOGO — edite aqui os seus trabalhos
 //  image: ficheiro na pasta /images/art
+//  edition: total de cópias da edição limitada
+//  left:    cópias que restam (0 = ESGOTADO). Atualize a cada venda!
 //  (se a imagem não existir, aparece um placeholder colorido)
 // ============================================================
 window.SITE = {
@@ -18,20 +20,20 @@ window.SITE = {
 };
 
 window.PRODUCTS = [
-  { slug: "raiz",            title: "Raiz",            colors: ["#F7B21B", "#E8620C"] },
-  { slug: "kampion",         title: "Kampion",         colors: ["#1E3FA8", "#F9C80E"] },
-  { slug: "noites",          title: "Noites",          colors: ["#F9A825", "#6A2C91"] },
-  { slug: "sol-di-praia",    title: "Sol di Praia",    colors: ["#B9B2A6", "#B3141B"] },
-  { slug: "flor-di-terra",   title: "Flor di Terra",   colors: ["#F57C00", "#FFE0B2"] },
-  { slug: "kauboi-kriol",    title: "Kauboi Kriol",    colors: ["#F2D7A7", "#3B2A20"] },
-  { slug: "passada",         title: "Passada",         colors: ["#1E4FD8", "#0B1E5B"] },
-  { slug: "responsabilidade", title: "Responsabilidade",        colors: ["#E53A1E", "#2E7D32"] },
-  { slug: "mundu-na-kabesa", title: "Mundu na Kabesa", colors: ["#FFC107", "#5D4037"] },
-  { slug: "pustura", title: "Pustura",            colors: ["#0F4C45", "#D4A017"] },
-  { slug: "sentimento", title: "Sentimento",           colors: ["#0B3D33", "#E0E0E0"] },
-  { slug: "janela",          title: "Janela",          colors: ["#F9A825", "#6D4C41"] },
-  { slug: "sab-boy", title: "Sab Boy",            colors: ["#EFE6D2", "#C1440E"] },
-  { slug: "e-22", title: "E-22",           colors: ["#F4E9DC", "#1E5AA8"] },
-  { slug: "irmandade",       title: "Irmandade",       colors: ["#D6D2CB", "#3A3530"] },
-  { slug: "status",          title: "Status",          colors: ["#BDBDBD", "#C62828"] },
+  { slug: "raiz",              title: "Raiz",              edition: 20, left: 10, colors: ["#F7B21B", "#E8620C"] },
+  { slug: "kampion",           title: "Kampion",           edition: 20, left: 10, colors: ["#1E3FA8", "#F9C80E"] },
+  { slug: "noites",            title: "Noites",            edition: 20, left: 10, colors: ["#F9A825", "#6A2C91"] },
+  { slug: "sol-di-praia",      title: "Sol di Praia",      edition: 20, left: 10, colors: ["#B9B2A6", "#B3141B"] },
+  { slug: "flor-di-terra",     title: "Flor di Terra",     edition: 20, left: 10, colors: ["#F57C00", "#FFE0B2"] },
+  { slug: "kauboi-kriol",      title: "Kauboi Kriol",      edition: 20, left: 10, colors: ["#F2D7A7", "#3B2A20"] },
+  { slug: "passada",           title: "Passada",           edition: 20, left: 10, colors: ["#1E4FD8", "#0B1E5B"] },
+  { slug: "responsabilidade",  title: "Responsabilidade",  edition: 20, left: 10, colors: ["#E53A1E", "#2E7D32"] },
+  { slug: "mundu-na-kabesa",   title: "Mundu na Kabesa",   edition: 20, left: 10, colors: ["#FFC107", "#5D4037"] },
+  { slug: "pustura",           title: "Pustura",           edition: 20, left: 10, colors: ["#0F4C45", "#D4A017"] },
+  { slug: "sentimento",        title: "Sentimento",        edition: 20, left: 10, colors: ["#0B3D33", "#E0E0E0"] },
+  { slug: "janela",            title: "Janela",            edition: 20, left: 10, colors: ["#F9A825", "#6D4C41"] },
+  { slug: "sab-boy",           title: "Sab Boy",           edition: 20, left: 10, colors: ["#EFE6D2", "#C1440E"] },
+  { slug: "e-22",              title: "E-22",              edition: 20, left: 10, colors: ["#F4E9DC", "#1E5AA8"] },
+  { slug: "irmandade",         title: "Irmandade",         edition: 20, left: 10, colors: ["#D6D2CB", "#3A3530"] },
+  { slug: "status",            title: "Status",            edition: 20, left: 10, colors: ["#BDBDBD", "#C62828"] },
 ].map((p) => ({ image: `images/art/${p.slug}.webp`, ...p }));
