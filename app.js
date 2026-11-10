@@ -109,7 +109,7 @@
 
   // ---------- políticas ----------
   const mail = () => `<a href="mailto:${S.email}">${S.email}</a>`;
-  const wa = () => `<a data-link="whatsapp" target="_blank" rel="noopener">WhatsApp (+238) 989 36 66</a>`;
+  const wa = () => `<a data-link="whatsapp" target="_blank" rel="noopener">WhatsApp</a>`;
   const POLICIES = {
     termos: {
       title: "Termos de Serviço",
