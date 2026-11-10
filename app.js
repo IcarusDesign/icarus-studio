@@ -48,7 +48,7 @@
           <div class="product__block">
             <nav class="crumbs" aria-label="Navegação"><a href="#/">Início</a><span>/</span><a href="#/">Coleção</a><span>/</span><span>${esc(p.title)}</span></nav>
             <h1 class="product__title">${esc(p.title)}</h1>
-            <p class="product__ship"><a href="#/shipping">Envio</a> calculado no checkout.</p>
+            <p class="product__ship">Portes não incluídos, segundo a tarifa dos Correios. <a href="#/envios">Envio</a></p>
             <p class="product__price" data-price>${fmt(S.sizes[0].price)}</p>
             <p class="label">Escolhe o tamanho</p>
             <div class="sizes" role="group" aria-label="Tamanho">
@@ -61,7 +61,8 @@
               <details><summary>Papel</summary><p>Papel de arte mate de 300 g/m², com textura suave e cores ricas e duradouras.</p></details>
               <details><summary>Detalhes</summary><p>Edição aberta — sem limite de quantidade, mas impressa com o mesmo cuidado. Cada print leva a assinatura digital do artista integrada na obra.</p></details>
               <details><summary>Nota</summary><p>Cada print inclui uma margem branca (2–4 cm consoante o tamanho), já incluída nas medidas totais. Facilita o manuseamento e a moldura sem cortar a arte.</p></details>
-              <details><summary>Alfândega e taxas</summary><p>Dependendo do país, a encomenda pode estar sujeita a taxas de importação cobradas pelas autoridades locais. Essas taxas são da responsabilidade do comprador.</p></details>
+              <details><summary>Envio</summary><p>Enviamos para todas as ilhas de Cabo Verde. O custo de envio não está incluído no preço: depende da tarifa dos Correios e é confirmado contigo pelo WhatsApp antes do pagamento.</p></details>
+              <details><summary>Devoluções</summary><p>Cada print é feito por encomenda, por isso todas as vendas são finais e não há reembolsos. Ver <a href="#/reembolso">Política de Reembolso</a>.</p></details>
             </div>
           </div>
         </div>
@@ -89,7 +90,7 @@
           <p>Somos a Icarus Studio, um estúdio de branding e ilustração digital nascido na Praia, Cabo Verde.</p>
           <p>O nosso trabalho junta retrato, cor e cultura: rostos construídos em planos de cor, texturas quentes e referências que reconheces — da música kriola ao desporto, da rua às capas de festival. Cada peça celebra a identidade cabo-verdiana e africana com uma linguagem gráfica contemporânea.</p>
           <p>Essas obras não ficam só no ecrã. Ganham vida como prints — feitos para viver numa parede, com qualidade à altura da arte. É aqui que uma imagem deixa de ser só uma imagem e passa a ser algo teu.</p>
-          <p>Tudo sai nos nossos termos: drops limitados, edições abertas e trabalhos por encomenda, enviados de Cabo Verde para o mundo.</p>
+          <p>Tudo sai nos nossos termos: drops limitados, edições abertas e trabalhos por encomenda, enviados para todas as ilhas de Cabo Verde.</p>
           <h2>Serviços</h2>
           <ul class="services">
             <li><span>Branding & Identidade Visual</span><span>01</span></li>
@@ -106,15 +107,82 @@
       </section>`;
   }
 
-  function viewShipping() {
-    document.title = "Envios | ICARUS STUDIO";
+  // ---------- políticas ----------
+  const mail = () => `<a href="mailto:${S.email}">${S.email}</a>`;
+  const wa = () => `<a data-link="whatsapp" target="_blank" rel="noopener">WhatsApp (+238) 989 36 66</a>`;
+  const POLICIES = {
+    termos: {
+      title: "Termos de Serviço",
+      body: () => `
+        <p>Ao usar este site e fazer uma encomenda à Icarus Studio, aceitas os termos abaixo.</p>
+        <h2>1. Sobre nós</h2>
+        <p>A Icarus Studio é um estúdio de branding e ilustração digital sediado na Praia, Cabo Verde. Contacto: ${mail()} · ${wa()}.</p>
+        <h2>2. Encomendas</h2>
+        <p>As encomendas são feitas através do carrinho do site e confirmadas por WhatsApp. Uma encomenda só fica confirmada depois de acordarmos contigo o valor total (print + envio) e de recebermos o pagamento.</p>
+        <h2>3. Preços</h2>
+        <p>Os preços apresentados no site referem-se apenas ao print. O custo de envio não está incluído e é calculado à parte (ver <a href="#/envios">Política de Envio</a>). Podemos alterar preços a qualquer momento, sem afetar encomendas já confirmadas.</p>
+        <h2>4. Produção</h2>
+        <p>Cada print é impresso por encomenda. Pequenas diferenças de cor entre o ecrã e o papel são normais e não são consideradas defeito.</p>
+        <h2>5. Direitos de autor</h2>
+        <p>Todas as artes, ilustrações e marcas apresentadas neste site são propriedade da Icarus Studio. A compra de um print dá-te direito a uso pessoal da peça física. Não é permitido reproduzir, digitalizar, revender ou usar as imagens para fins comerciais sem autorização escrita.</p>
+        <h2>6. Trabalhos por encomenda</h2>
+        <p>Projetos de branding, ilustração e retratos personalizados têm orçamento, prazos e condições próprias, acordadas caso a caso antes do início do trabalho.</p>
+        <h2>7. Alterações</h2>
+        <p>Podemos atualizar estes termos. A versão em vigor é sempre a publicada nesta página.</p>`,
+    },
+    reembolso: {
+      title: "Política de Reembolso",
+      body: () => `
+        <div class="policy__callout">Todas as vendas são finais. Não aceitamos devoluções nem fazemos reembolsos.</div>
+        <p>Cada print é produzido especialmente para ti depois da encomenda, por isso não é possível devolver, trocar ou cancelar uma encomenda depois de confirmada e paga.</p>
+        <h2>Print danificado ou com erro</h2>
+        <p>Se o teu print chegar danificado ou com um erro de impressão da nossa parte, contacta-nos até 48 horas depois de o receberes, com fotos da embalagem e do print, por ${wa()} ou ${mail()}. Nesses casos, analisamos a situação e podemos reimprimir o print, sem que isso constitua um reembolso.</p>
+        <h2>Antes de encomendar</h2>
+        <p>Confirma com atenção a arte, o tamanho e a morada de entrega antes de finalizar. Em caso de dúvida, fala connosco antes de pagar.</p>`,
+    },
+    envios: {
+      title: "Política de Envio",
+      body: () => `
+        <p>Enviamos para todas as ilhas de Cabo Verde, a partir da Praia.</p>
+        <div class="policy__callout">O custo de envio não está incluído nos preços apresentados no site. O valor depende da tarifa dos Correios para o teu destino, tamanho e peso da encomenda.</div>
+        <h2>Como funciona</h2>
+        <ul>
+          <li>Finalizas o pedido no carrinho, que abre o WhatsApp com a tua encomenda.</li>
+          <li>Confirmamos contigo o custo de envio segundo a tarifa dos Correios e o valor total.</li>
+          <li>Depois do pagamento, o print é produzido e enviado.</li>
+        </ul>
+        <h2>Prazos</h2>
+        <p>A produção demora normalmente 3 a 5 dias úteis. O prazo de entrega depende dos Correios e da ilha de destino.</p>
+        <h2>Embalagem</h2>
+        <p>Os prints são enviados protegidos, em tubo rígido ou envelope reforçado, para chegarem em perfeitas condições.</p>
+        <h2>Morada e responsabilidade</h2>
+        <p>Garante que a morada indicada está completa e correta. Não nos responsabilizamos por atrasos ou extravios causados pelos Correios ou por moradas incorretas.</p>`,
+    },
+    privacidade: {
+      title: "Política de Privacidade",
+      body: () => `
+        <p>A tua privacidade é importante para nós. Esta política explica que dados recolhemos e como os usamos.</p>
+        <h2>Dados que recolhemos</h2>
+        <ul>
+          <li><strong>Encomendas:</strong> nome, contacto e morada que nos envias pelo WhatsApp para processar e entregar a encomenda.</li>
+          <li><strong>Newsletter:</strong> o email que nos deixas, se subscreveres.</li>
+          <li><strong>No teu dispositivo:</strong> o site guarda localmente o conteúdo do carrinho e a tua escolha sobre cookies. Estes dados ficam no teu navegador e não são enviados para nós.</li>
+        </ul>
+        <h2>Como usamos os dados</h2>
+        <p>Usamos os teus dados apenas para tratar das encomendas, responder a mensagens e, se subscreveres, enviar novidades da Icarus Studio. Não vendemos nem partilhamos os teus dados com terceiros, exceto o necessário para a entrega (por exemplo, os Correios).</p>
+        <h2>Serviços de terceiros</h2>
+        <p>As encomendas são tratadas pelo WhatsApp, que tem a sua própria política de privacidade. O site é alojado no GitHub Pages e usa tipos de letra do Google Fonts.</p>
+        <h2>Os teus direitos</h2>
+        <p>Podes pedir para ver, corrigir ou apagar os teus dados, ou cancelar a newsletter, a qualquer momento através de ${mail()}.</p>`,
+    },
+  };
+
+  function viewPolicy(key) {
+    const p = POLICIES[key];
+    document.title = `${p.title} | ICARUS STUDIO`;
     main.innerHTML = `
-      <div class="page-head"><nav class="crumbs"><a href="#/">Início</a><span>/</span><span>Envios</span></nav><h1>Envios</h1></div>
-      <section class="about"><div class="about__text">
-        <p>Enviamos para todo o mundo a partir da Praia, Cabo Verde.</p>
-        <p>Cada print é impresso por encomenda e enviado num tubo rígido para chegar em perfeitas condições. O prazo de produção é de 3 a 5 dias úteis, mais o tempo de transporte.</p>
-        <p>Depois de finalizares o pedido, confirmamos contigo o valor do envio, o pagamento e o prazo de entrega.</p>
-      </div></section>`;
+      <div class="page-head"><nav class="crumbs"><a href="#/">Início</a><span>/</span><span>${p.title}</span></nav><h1>${p.title}</h1></div>
+      <article class="policy">${p.body()}<p class="policy__updated">Última atualização: novembro de 2026</p></article>`;
   }
 
   // ---------- router ----------
@@ -123,7 +191,7 @@
     const [a, b] = h.split("/");
     if (a === "p") viewProduct(b);
     else if (a === "about") viewAbout();
-    else if (a === "shipping") viewShipping();
+    else if (POLICIES[a]) viewPolicy(a);
     else viewHome();
     $$("[data-nav]").forEach((n) => n.classList.toggle("is-active", (n.dataset.nav === "about") === (a === "about") && (a === "about" || !a)));
     bindLinks();
@@ -145,7 +213,7 @@
 
   // ---------- links externos ----------
   function bindLinks() {
-    const links = { instagram: S.instagram, threads: S.threads, whatsapp: `https://wa.me/${S.whatsapp}?text=${encodeURIComponent("Olá Icarus Studio! Gostava de pedir um orçamento.")}` };
+    const links = { instagram: S.instagram, threads: S.threads, email: `mailto:${S.email}`, whatsapp: `https://wa.me/${S.whatsapp}?text=${encodeURIComponent("Olá Icarus Studio! Gostava de pedir um orçamento.")}` };
     $$("[data-link]").forEach((a) => { a.href = links[a.dataset.link]; });
   }
 
