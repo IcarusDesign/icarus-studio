@@ -12,6 +12,10 @@ window.SITE = {
   instagram: "https://instagram.com/icarus_studios7",
   threads: "https://www.threads.net/@icarus_studios7",
   email: "herminiltonmiranda12@gmail.com",
+  phone: "+2389893666",            // botão "Ligar" no checkout
+  shipping: 3,                     // envio fixo para todas as ilhas (€)
+  deliveryDays: 7,                 // prazo de entrega
+  islands: ["Santiago", "São Vicente", "Santo Antão", "São Nicolau", "Sal", "Boa Vista", "Maio", "Fogo", "Brava"],
   sizes: [
     { label: "A4 / 21x30 cm", price: 25 },
     { label: "A3 / 30x42 cm", price: 40 },

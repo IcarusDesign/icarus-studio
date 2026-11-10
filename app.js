@@ -66,7 +66,7 @@
               <p class="edition__text">Edição limitada de <strong>${p.edition} cópias</strong>, autografadas pelo autor. ${soldOut(p) ? "Esta edição está esgotada." : `Restam apenas <strong>${p.left}</strong>.`}</p>
               <div class="edition__bar" role="img" aria-label="Restam ${Math.max(p.left, 0)} de ${p.edition} cópias"><span style="width:${Math.max(0, Math.min(100, (p.left / p.edition) * 100))}%"></span></div>
             </div>` : ""}
-            <p class="product__ship">Portes não incluídos, segundo a tarifa dos Correios. <a href="#/envios">Envio</a></p>
+            <p class="product__ship"><a href="#/envios">Envio</a> de ${fmt(S.shipping)} para todas as ilhas · Entrega em até ${S.deliveryDays} dias.</p>
             <p class="product__price" data-price>${fmt(S.sizes[0].price)}</p>
             <p class="label">Escolhe o tamanho</p>
             <div class="sizes" role="group" aria-label="Tamanho">
@@ -79,7 +79,7 @@
               <details><summary>Papel</summary><p>Papel de arte mate de 300 g/m², com textura suave e cores ricas e duradouras.</p></details>
               <details><summary>Detalhes</summary><p>${p.edition ? `Edição limitada de ${p.edition} cópias. Cada print é autografado pelo autor. Quando a edição esgota, esta arte não volta a ser impressa neste formato.` : "Cada print é autografado pelo autor."}</p></details>
               <details><summary>Nota</summary><p>Cada print inclui uma margem branca (2–4 cm consoante o tamanho), já incluída nas medidas totais. Facilita o manuseamento e a moldura sem cortar a arte.</p></details>
-              <details><summary>Envio</summary><p>Enviamos para todas as ilhas de Cabo Verde. O custo de envio não está incluído no preço: depende da tarifa dos Correios e é confirmado contigo pelo WhatsApp antes do pagamento.</p></details>
+              <details><summary>Envio</summary><p>Enviamos para todas as ilhas de Cabo Verde por um valor fixo de ${fmt(S.shipping)}, somado no checkout. Entrega em até ${S.deliveryDays} dias após a confirmação do pagamento.</p></details>
               <details><summary>Devoluções</summary><p>Cada print é feito por encomenda, por isso todas as vendas são finais e não há reembolsos. Ver <a href="#/reembolso">Política de Reembolso</a>.</p></details>
             </div>
           </div>
@@ -136,9 +136,9 @@
         <h2>1. Sobre nós</h2>
         <p>A Icarus Studio é um estúdio de branding e ilustração digital sediado na Praia, Cabo Verde. Contacto: ${mail()} · ${wa()}.</p>
         <h2>2. Encomendas</h2>
-        <p>As encomendas são feitas através do carrinho do site e confirmadas por WhatsApp. Uma encomenda só fica confirmada depois de acordarmos contigo o valor total (print + envio) e de recebermos o pagamento.</p>
+        <p>As encomendas são feitas no checkout do site. O pagamento é feito por transferência bancária e a encomenda só fica confirmada depois de recebermos o comprovativo (carregado no site ou enviado pelo WhatsApp) e de confirmarmos o pagamento.</p>
         <h2>3. Preços</h2>
-        <p>Os preços apresentados no site referem-se apenas ao print. O custo de envio não está incluído e é calculado à parte (ver <a href="#/envios">Política de Envio</a>). Podemos alterar preços a qualquer momento, sem afetar encomendas já confirmadas.</p>
+        <p>Os preços apresentados no site referem-se ao print. O envio custa ${fmt(S.shipping)} para qualquer ilha de Cabo Verde e é somado no checkout (ver <a href="#/envios">Política de Envio</a>). Podemos alterar preços a qualquer momento, sem afetar encomendas já confirmadas.</p>
         <h2>4. Produção</h2>
         <p>Cada print é impresso por encomenda. Pequenas diferenças de cor entre o ecrã e o papel são normais e não são consideradas defeito.</p>
         <h2>5. Direitos de autor</h2>
@@ -162,19 +162,19 @@
       title: "Política de Envio",
       body: () => `
         <p>Enviamos para todas as ilhas de Cabo Verde, a partir da Praia.</p>
-        <div class="policy__callout">O custo de envio não está incluído nos preços apresentados no site. O valor depende da tarifa dos Correios para o teu destino, tamanho e peso da encomenda.</div>
+        <div class="policy__callout">Envio a preço fixo de ${fmt(S.shipping)} para qualquer ilha. Entrega em até ${S.deliveryDays} dias após a confirmação do pagamento.</div>
         <h2>Como funciona</h2>
         <ul>
-          <li>Finalizas o pedido no carrinho, que abre o WhatsApp com a tua encomenda.</li>
-          <li>Confirmamos contigo o custo de envio segundo a tarifa dos Correios e o valor total.</li>
-          <li>Depois do pagamento, o print é produzido e enviado.</li>
+          <li>No checkout indicas o teu nome, telefone, ilha e endereço de entrega.</li>
+          <li>Fazes a transferência do total (prints + ${fmt(S.shipping)} de envio) e envias o comprovativo, no site ou pelo WhatsApp.</li>
+          <li>Depois de confirmarmos o pagamento, o teu print autografado é preparado e enviado.</li>
         </ul>
         <h2>Prazos</h2>
-        <p>A produção demora normalmente 3 a 5 dias úteis. O prazo de entrega depende dos Correios e da ilha de destino.</p>
+        <p>A entrega é feita em até ${S.deliveryDays} dias após a confirmação do pagamento. Em casos excecionais (feriados, mau tempo ou atrasos nos transportes entre ilhas) o prazo pode ser maior; nesse caso avisamos-te.</p>
         <h2>Embalagem</h2>
         <p>Os prints são enviados protegidos, em tubo rígido ou envelope reforçado, para chegarem em perfeitas condições.</p>
         <h2>Morada e responsabilidade</h2>
-        <p>Garante que a morada indicada está completa e correta. Não nos responsabilizamos por atrasos ou extravios causados pelos Correios ou por moradas incorretas.</p>`,
+        <p>Garante que o endereço indicado está completo e correto. Não nos responsabilizamos por atrasos ou extravios causados pela transportadora ou por endereços incorretos.</p>`,
     },
     privacidade: {
       title: "Política de Privacidade",
@@ -182,16 +182,19 @@
         <p>A tua privacidade é importante para nós. Esta política explica que dados recolhemos e como os usamos.</p>
         <h2>Dados que recolhemos</h2>
         <ul>
-          <li><strong>Encomendas:</strong> nome, contacto e morada que nos envias pelo WhatsApp para processar e entregar a encomenda.</li>
+          <li><strong>Checkout:</strong> nome, telefone, email (opcional), ilha e endereço de entrega, os artigos encomendados e o comprovativo de transferência que carregares.</li>
+          <li><strong>Campanhas:</strong> se marcares a opção no checkout, guardamos que aceitas receber novidades e campanhas.</li>
           <li><strong>Newsletter:</strong> o email que nos deixas, se subscreveres.</li>
-          <li><strong>No teu dispositivo:</strong> o site guarda localmente o conteúdo do carrinho e a tua escolha sobre cookies. Estes dados ficam no teu navegador e não são enviados para nós.</li>
+          <li><strong>No teu dispositivo:</strong> o site guarda localmente o carrinho, os dados do formulário (para não teres de os escrever outra vez) e a tua escolha sobre cookies. Estes dados ficam no teu navegador.</li>
         </ul>
         <h2>Como usamos os dados</h2>
-        <p>Usamos os teus dados apenas para tratar das encomendas, responder a mensagens e, se subscreveres, enviar novidades da Icarus Studio. Não vendemos nem partilhamos os teus dados com terceiros, exceto o necessário para a entrega (por exemplo, os Correios).</p>
+        <p>Usamos os teus dados para tratar e entregar as encomendas, confirmar pagamentos e responder a mensagens. Só te enviamos campanhas e novidades se tiveres dado autorização no checkout ou na newsletter. Não vendemos nem partilhamos os teus dados com terceiros, exceto o necessário para a entrega.</p>
+        <h2>Onde ficam guardados</h2>
+        <p>Os pedidos e comprovativos são guardados numa conta Google (Google Sheets e Google Drive) gerida pela Icarus Studio. Os comprovativos servem apenas para confirmar o pagamento.</p>
         <h2>Serviços de terceiros</h2>
-        <p>As encomendas são tratadas pelo WhatsApp, que tem a sua própria política de privacidade. O site é alojado no GitHub Pages e usa tipos de letra do Google Fonts.</p>
+        <p>O contacto pode ser feito pelo WhatsApp, que tem a sua própria política de privacidade. O site é alojado no GitHub Pages e usa tipos de letra do Google Fonts.</p>
         <h2>Os teus direitos</h2>
-        <p>Podes pedir para ver, corrigir ou apagar os teus dados, ou cancelar a newsletter, a qualquer momento através de ${mail()}.</p>`,
+        <p>Podes pedir para ver, corrigir ou apagar os teus dados, ou deixar de receber campanhas, a qualquer momento através de ${mail()} ou ${wa()}.</p>`,
     },
   };
 
@@ -203,6 +206,243 @@
       <article class="policy">${p.body()}<p class="policy__updated">Última atualização: novembro de 2026</p></article>`;
   }
 
+  // ============================================================
+  //  CHECKOUT  (1 dados → 2 pagamento + comprovativo → 3 concluído)
+  // ============================================================
+  const PAY = window.PAYMENT || { bank: {}, ordersEndpoint: "" };
+  const BANK_FIELDS = [["holder", "Titular"], ["bank", "Banco"], ["account", "Nº da Conta"], ["nib", "NIB"], ["iban", "IBAN"]];
+  const bankReady = () => BANK_FIELDS.every(([k]) => String(PAY.bank?.[k] || "").trim());
+  const hasDB = () => /^https?:\/\//.test(PAY.ordersEndpoint || "");
+  const subtotal = () => cart.reduce((s, x) => s + S.sizes[x.size].price * x.qty, 0);
+  const cartSig = () => JSON.stringify(cart.map((x) => [x.slug, x.size, x.qty]));
+  const itemsText = (items) => items.map((x) => `${x.qty}x ${x.title} (${x.size}) — ${fmt(x.total)}`).join("\n");
+  const newRef = () => "IC-" + (Date.now().toString(36).slice(-4) + Math.random().toString(36).slice(2, 4)).toUpperCase();
+  const waLink = (msg) => `https://wa.me/${S.whatsapp}?text=${encodeURIComponent(msg)}`;
+  const ICON = {
+    copy: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"/><path d="M5 15V5a1 1 0 0 1 1-1h9"/></svg>`,
+    phone: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>`,
+    wa: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 1c-1-.5-2-1.5-2.5-2.5l1-1-1-2z"/></svg>`,
+  };
+
+  // envia para a base de dados (Google Apps Script). Nunca bloqueia o cliente.
+  async function sendDB(payload) {
+    if (!hasDB()) return { ok: false, skipped: true };
+    try {
+      const r = await fetch(PAY.ordersEndpoint, { method: "POST", body: JSON.stringify(payload) });
+      return await r.json();
+    } catch (err) {
+      console.warn("Base de dados indisponível:", err);
+      return { ok: false };
+    }
+  }
+
+  async function copyText(text, btn) {
+    try { await navigator.clipboard.writeText(text); }
+    catch {
+      const ta = Object.assign(document.createElement("textarea"), { value: text });
+      ta.style.cssText = "position:fixed;opacity:0"; document.body.append(ta); ta.select();
+      try { document.execCommand("copy"); } catch {}
+      ta.remove();
+    }
+    const old = btn.innerHTML;
+    btn.classList.add("is-done"); btn.textContent = "Copiado ✓";
+    setTimeout(() => { btn.classList.remove("is-done"); btn.innerHTML = old; }, 1600);
+  }
+
+  const helpBox = () => `
+    <div class="help">
+      <p class="help__title">Dúvidas sobre o pedido?</p>
+      <div class="help__btns">
+        <a class="btn-line btn-icon" href="tel:${S.phone}">${ICON.phone}Ligar</a>
+        <a class="btn-line btn-icon" href="${waLink("Olá Icarus Studio! Tenho uma dúvida sobre a minha encomenda.")}" target="_blank" rel="noopener">${ICON.wa}WhatsApp</a>
+      </div>
+    </div>`;
+
+  const summary = (o) => `
+    <aside class="co-summary">
+      <h2 class="co-h">Resumo${o.ref ? ` <span class="co-ref">#${o.ref}</span>` : ""}</h2>
+      ${o.items.map((x) => `
+        <div class="co-item">
+          ${print(prod(x.slug))}
+          <div><strong>${esc(x.title)}</strong><small>${esc(x.size)} · ${x.qty}x</small></div>
+          <span>${fmt(x.total)}</span>
+        </div>`).join("")}
+      <div class="co-rows">
+        <div><span>Subtotal</span><span>${fmt(o.subtotal)}</span></div>
+        <div><span>Envio · todas as ilhas</span><span>${fmt(o.shipping)}</span></div>
+        <div class="co-total"><span>Total</span><span>${fmt(o.total)}</span></div>
+      </div>
+      <p class="co-note">Entrega em até ${S.deliveryDays} dias após a confirmação do pagamento.</p>
+      ${helpBox()}
+    </aside>`;
+
+  const steps = (n) => `<ol class="co-steps">${["Dados", "Pagamento", "Concluído"].map((t, i) => `<li class="${i + 1 === n ? "is-on" : i + 1 < n ? "is-done" : ""}"><span>${i + 1}</span>${t}</li>`).join("")}</ol>`;
+  const coHead = (n) => `<div class="page-head"><nav class="crumbs"><a href="#/">Início</a><span>/</span><span>Checkout</span></nav><h1>Checkout</h1>${steps(n)}</div>`;
+
+  function viewCheckout() {
+    document.title = "Checkout | ICARUS STUDIO";
+    const pending = store.get("icarus-order", null);
+    const done = store.get("icarus-done", null);
+    if (pending && pending.sig === cartSig() && cart.length) return checkoutPay(pending);
+    if (!cart.length && done) return checkoutDone(done);
+    if (!cart.length) {
+      main.innerHTML = `${coHead(1)}<section class="policy"><p>O teu carrinho está vazio.</p><a class="btn-line" href="#/">Ver artes</a></section>`;
+      return;
+    }
+    checkoutForm();
+  }
+
+  // ---------- passo 1: dados do cliente ----------
+  function checkoutForm() {
+    const items = cart.map((x) => { const p = prod(x.slug), s = S.sizes[x.size]; return { slug: x.slug, title: p.title, size: s.label, qty: x.qty, total: s.price * x.qty }; });
+    const o = { items, subtotal: subtotal(), shipping: S.shipping, total: subtotal() + S.shipping };
+    const saved = store.get("icarus-customer", {});
+    main.innerHTML = `${coHead(1)}
+      <section class="co">
+        <form class="co-form" novalidate data-co-form>
+          <h2 class="co-h">Os teus dados</h2>
+          <label class="field"><span>Nome completo *</span><input name="name" autocomplete="name" required value="${esc(saved.name || "")}"></label>
+          <label class="field"><span>Telefone *</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+238 ..." required pattern="[+0-9 ()-]{7,}" value="${esc(saved.phone || "")}"></label>
+          <label class="field"><span>Email <em>(opcional)</em></span><input name="email" type="email" autocomplete="email" value="${esc(saved.email || "")}"></label>
+          <label class="field"><span>Ilha *</span>
+            <select name="island" required>
+              <option value="">Escolhe a ilha</option>
+              ${S.islands.map((i) => `<option ${saved.island === i ? "selected" : ""}>${i}</option>`).join("")}
+            </select>
+          </label>
+          <label class="field"><span>Endereço de entrega *</span><textarea name="address" rows="3" autocomplete="street-address" placeholder="Cidade, zona, rua, nº da casa e um ponto de referência" required>${esc(saved.address || "")}</textarea></label>
+          <label class="check"><input type="checkbox" name="marketing" ${saved.marketing ? "checked" : ""}><span>Quero receber novidades, novos drops e campanhas da Icarus Studio.</span></label>
+          <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="co-error" data-co-error role="alert"></p>
+          <button class="btn-black" type="submit">Continuar para pagamento — ${fmt(o.total)}</button>
+          <p class="co-legal">Ao continuar aceitas os <a href="#/termos">Termos de Serviço</a> e a <a href="#/privacidade">Política de Privacidade</a>. Todas as vendas são finais (<a href="#/reembolso">sem reembolso</a>).</p>
+        </form>
+        ${summary(o)}
+      </section>`;
+
+    const form = $("[data-co-form]", main);
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const f = Object.fromEntries(new FormData(form));
+      const err = $("[data-co-error]", main);
+      $$(".field", form).forEach((l) => l.classList.remove("is-bad"));
+      const bad = [];
+      if (f.name.trim().length < 2) bad.push("name");
+      if (!/^[+0-9 ()-]{7,}$/.test(f.phone.trim())) bad.push("phone");
+      if (f.email && !/^\S+@\S+\.\S+$/.test(f.email)) bad.push("email");
+      if (!f.island) bad.push("island");
+      if (f.address.trim().length < 5) bad.push("address");
+      if (bad.length) {
+        bad.forEach((n) => form.elements[n].closest(".field").classList.add("is-bad"));
+        err.textContent = "Preenche os campos assinalados.";
+        form.elements[bad[0]].focus();
+        return;
+      }
+      err.textContent = "";
+      const customer = { name: f.name.trim(), phone: f.phone.trim(), email: f.email.trim(), island: f.island, address: f.address.trim(), marketing: !!f.marketing };
+      store.set("icarus-customer", customer);
+      const order = { ...o, ref: newRef(), customer, sig: cartSig(), created: new Date().toISOString() };
+      const btn = $("button[type=submit]", form); btn.disabled = true; btn.textContent = "A guardar…";
+      await sendDB({
+        action: "order", website: f.website, ref: order.ref, ...customer,
+        items: itemsText(order.items), subtotal: order.subtotal, shipping: order.shipping, total: order.total,
+      });
+      store.set("icarus-order", order);
+      checkoutPay(order);
+      window.scrollTo(0, 0);
+    });
+  }
+
+  // ---------- passo 2: dados bancários + comprovativo ----------
+  function checkoutPay(o) {
+    const proofMsg = `Olá Icarus Studio! Segue o comprovativo da transferência.\n\nPedido: #${o.ref}\nNome: ${o.customer.name}\nTotal: ${fmt(o.total)}\n\n${itemsText(o.items)}\n+ Envio: ${fmt(o.shipping)}`;
+    const askBankMsg = `Olá Icarus Studio! Fiz o pedido #${o.ref} (${fmt(o.total)}) e preciso dos dados bancários para a transferência.`;
+    const row = (label, value, mono) => `
+      <div class="bank__row"><span class="bank__label">${label}</span><span class="bank__value${mono ? " is-mono" : ""}">${esc(value)}</span>
+      <button type="button" class="copy" data-copy="${esc(value)}" aria-label="Copiar ${label}">${ICON.copy}Copiar</button></div>`;
+
+    main.innerHTML = `${coHead(2)}
+      <section class="co">
+        <div class="co-form">
+          <h2 class="co-h">Pagamento por transferência</h2>
+          <p class="co-lead">Faz uma transferência de <strong>${fmt(o.total)}</strong> para a conta abaixo e indica a referência <strong>${o.ref}</strong> no descritivo.</p>
+          ${bankReady() ? `
+          <div class="bank">
+            ${row(`Valor (${S.currency})`, o.total.toFixed(2).replace(".", ","), true)}
+            ${row("Referência", o.ref, true)}
+            ${BANK_FIELDS.map(([k, l]) => row(l, String(PAY.bank[k]).trim(), k !== "holder" && k !== "bank")).join("")}
+          </div>` : `
+          <div class="policy__callout">Os dados bancários são enviados pelo WhatsApp.
+            <a class="btn-line btn-icon" style="margin-top:10px" href="${waLink(askBankMsg)}" target="_blank" rel="noopener">${ICON.wa}Pedir dados bancários</a></div>`}
+
+          <h2 class="co-h">Envia o comprovativo</h2>
+          <p class="co-lead">Depois de transferir, envia o comprovativo para prepararmos e enviarmos o teu pedido.</p>
+          ${hasDB() ? `
+          <div class="proof">
+            <label class="drop" data-drop>
+              <input type="file" accept="image/*,application/pdf" data-file>
+              <span class="drop__txt" data-drop-txt><strong>Carregar comprovativo</strong><br>Foto ou PDF, até 5 MB</span>
+            </label>
+            <button class="btn-black" type="button" data-upload disabled>Enviar comprovativo</button>
+            <p class="co-error" data-up-error role="alert"></p>
+          </div>
+          <div class="or"><span>ou</span></div>` : ""}
+          <a class="btn-line btn-icon btn-wide" href="${waLink(proofMsg)}" target="_blank" rel="noopener" data-wa-proof>${ICON.wa}Enviar comprovativo pelo WhatsApp</a>
+          <p class="co-legal">No WhatsApp, anexa a foto ou o PDF do comprovativo à mensagem que já vai escrita.</p>
+          <button type="button" class="link-btn" data-edit>← Alterar os meus dados</button>
+        </div>
+        ${summary(o)}
+      </section>`;
+
+    $$("[data-copy]", main).forEach((b) => b.addEventListener("click", () => copyText(b.dataset.copy, b)));
+    $("[data-edit]", main).addEventListener("click", () => { store.set("icarus-order", null); checkoutForm(); });
+    $("[data-wa-proof]", main).addEventListener("click", () => {
+      sendDB({ action: "status", ref: o.ref, status: "Comprovativo via WhatsApp" });
+      setTimeout(() => finish(o, "whatsapp"), 400);
+    });
+
+    if (!hasDB()) return;
+    const input = $("[data-file]", main), up = $("[data-upload]", main), uerr = $("[data-up-error]", main);
+    let file = null;
+    input.addEventListener("change", () => {
+      file = input.files[0] || null; uerr.textContent = "";
+      if (file && !/^image\/|^application\/pdf$/.test(file.type)) { file = null; uerr.textContent = "Usa uma imagem ou um PDF."; }
+      else if (file && file.size > 5 * 1024 * 1024) { file = null; uerr.textContent = "O ficheiro tem mais de 5 MB."; }
+      $("[data-drop-txt]", main).innerHTML = file ? `<strong>${esc(file.name)}</strong><br>${(file.size / 1024 / 1024).toFixed(1)} MB · toca para trocar` : `<strong>Carregar comprovativo</strong><br>Foto ou PDF, até 5 MB`;
+      $("[data-drop]", main).classList.toggle("has-file", !!file);
+      up.disabled = !file;
+    });
+    up.addEventListener("click", async () => {
+      if (!file) return;
+      up.disabled = true; up.textContent = "A enviar…"; uerr.textContent = "";
+      const data = await new Promise((res) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1]); r.readAsDataURL(file); });
+      const res = await sendDB({ action: "proof", ref: o.ref, file: { name: file.name, type: file.type, data } });
+      if (res && res.ok) return finish(o, "upload");
+      up.disabled = false; up.textContent = "Enviar comprovativo";
+      uerr.textContent = "Não foi possível enviar. Tenta de novo ou envia pelo WhatsApp.";
+    });
+  }
+
+  // ---------- passo 3: concluído ----------
+  function finish(o, via) {
+    const done = { ref: o.ref, name: o.customer.name, total: o.total, via };
+    store.set("icarus-done", done);
+    store.set("icarus-order", null);
+    cart = []; saveCart();
+    if (location.hash !== "#/checkout") location.hash = "#/checkout"; else checkoutDone(done);
+  }
+  function checkoutDone(d) {
+    main.innerHTML = `${coHead(3)}
+      <section class="co-done">
+        <img src="images/logo-wings.webp" alt="" width="120">
+        <h2>Obrigado, ${esc(d.name.split(" ")[0])}!</h2>
+        <p>O teu pedido <strong>#${d.ref}</strong> (${fmt(d.total)}) foi registado.</p>
+        <p>${d.via === "upload" ? "Recebemos o teu comprovativo." : "Não te esqueças de anexar o comprovativo na conversa do WhatsApp."} Assim que confirmarmos o pagamento, preparamos o teu print autografado e enviamos em até ${S.deliveryDays} dias.</p>
+        <a class="btn-black" href="#/" style="max-width:320px;margin:24px auto 0">Continuar a ver artes</a>
+        ${helpBox()}
+      </section>`;
+  }
+
   // ---------- router ----------
   function route() {
     const h = location.hash.replace(/^#\/?/, "");
@@ -210,7 +450,9 @@
     if (a === "p") viewProduct(b);
     else if (a === "about") viewAbout();
     else if (POLICIES[a]) viewPolicy(a);
+    else if (a === "checkout") viewCheckout();
     else viewHome();
+    $("[data-badge]")?.classList.toggle("is-hidden", a === "checkout");
     $$("[data-nav]").forEach((n) => n.classList.toggle("is-active", (n.dataset.nav === "about") === (a === "about") && (a === "about" || !a)));
     bindLinks();
     observe();
@@ -275,7 +517,11 @@
         <div class="qty"><button type="button" data-q="${i}" data-d="-1" aria-label="Menos">−</button><span>${x.qty}</span><button type="button" data-q="${i}" data-d="1" aria-label="Mais">+</button></div></div>
         <div><div class="line__price">${fmt(s.price * x.qty)}</div><button type="button" class="line__remove" data-rm="${i}">Remover</button></div></div>`;
     }).join("");
-    $("[data-cart-total]").textContent = fmt(cart.reduce((s, x) => s + S.sizes[x.size].price * x.qty, 0));
+    const sub = cart.reduce((s, x) => s + S.sizes[x.size].price * x.qty, 0);
+    $("[data-cart-subtotal]").textContent = fmt(sub);
+    $("[data-cart-shipping]").textContent = cart.length ? fmt(S.shipping) : fmt(0);
+    $("[data-cart-total]").textContent = fmt(cart.length ? sub + S.shipping : 0);
+    $("[data-days]").textContent = S.deliveryDays;
     $("[data-checkout]").disabled = !cart.length;
     $("[data-checkout]").style.opacity = cart.length ? 1 : .4;
   }
@@ -295,10 +541,7 @@
   });
   $("[data-checkout]").addEventListener("click", () => {
     if (!cart.length) return;
-    const lines = cart.map((x) => { const p = P.find((q) => q.slug === x.slug); const s = S.sizes[x.size]; return `• ${x.qty}x ${p.title} (${s.label}) — ${fmt(s.price * x.qty)}`; });
-    const total = fmt(cart.reduce((s, x) => s + S.sizes[x.size].price * x.qty, 0));
-    const msg = `Olá Icarus Studio! Quero encomendar:\n${lines.join("\n")}\n\nTotal: ${total}`;
-    window.open(`https://wa.me/${S.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
+    if (location.hash === "#/checkout") { closeCart(); route(); } else location.hash = "#/checkout";
   });
 
   // ---------- newsletter ----------
@@ -324,6 +567,7 @@
   mn.innerHTML = `<a href="#/">Início</a><a href="#/about">Sobre</a>`;
   $(".header").after(mn);
 
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
   $("[data-year]").textContent = new Date().getFullYear();
   window.addEventListener("hashchange", route);
   renderCart();

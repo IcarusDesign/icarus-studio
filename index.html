@@ -96,9 +96,11 @@
     </div>
     <div class="drawer__items" data-cart-items></div>
     <div class="drawer__foot">
+      <div class="drawer__row"><span>Subtotal</span><span data-cart-subtotal>€0</span></div>
+      <div class="drawer__row"><span>Envio (todas as ilhas)</span><span data-cart-shipping>€0</span></div>
       <div class="drawer__total"><span>Total</span><span data-cart-total>€0</span></div>
-      <button class="btn-black" type="button" data-checkout>Finalizar pedido via WhatsApp</button>
-      <p class="drawer__hint">Confirmamos o pagamento e o envio contigo diretamente.</p>
+      <button class="btn-black" type="button" data-checkout>Finalizar pedido</button>
+      <p class="drawer__hint">Pagamento por transferência bancária · Entrega em até <span data-days>7</span> dias</p>
     </div>
   </aside>
 
@@ -112,6 +114,7 @@
   </div>
 
   <script src="products.js"></script>
+  <script src="pagamento.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
