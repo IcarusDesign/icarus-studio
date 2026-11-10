@@ -14,7 +14,7 @@ Site publicado: https://icarusdesign.github.io/icarus-studio/
 No Terminal, dentro da pasta `Website`:
 
 ```bash
-git add -A && git commit -m "Atualiza site" && git push
+./publicar.sh "o que mudou"
 ```
 
 O site atualiza em ~1 minuto.
