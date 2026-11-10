@@ -101,7 +101,7 @@
           <a class="btn-line" data-link="whatsapp" target="_blank" rel="noopener">Pedir orçamento</a>
         </div>
         <div class="about__media">
-          <img src="images/about.jpg" alt="Icarus Studio" onerror="this.outerHTML=this.nextElementSibling.innerHTML"><template><svg class="big-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 26c-2-3-6-5-12-6 4-1 8 0 10 2-1-3-4-6-8-8 5 0 8 3 10 7 2-4 5-7 10-7-4 2-7 5-8 8 2-2 6-3 10-2-6 1-10 3-12 6z" fill="#fff"/></svg></template>
+          <img src="images/about.jpg" alt="Icarus Studio" onerror="this.outerHTML=this.nextElementSibling.innerHTML"><template><img class="big-mark" src="images/logo-wings.webp" alt="Logo Icarus"></template>
         </div>
       </section>`;
   }
