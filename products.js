@@ -39,5 +39,4 @@ window.PRODUCTS = [
   { slug: "sab-boy",           title: "Sab Boy",           edition: 15, left: 15, colors: ["#EFE6D2", "#C1440E"] },
   { slug: "e-22",              title: "E-22",              edition: 15, left: 15, colors: ["#F4E9DC", "#1E5AA8"] },
   { slug: "irmandade",         title: "Irmandade",         edition: 15, left: 15, colors: ["#D6D2CB", "#3A3530"] },
-  { slug: "status",            title: "Status",            edition: 15, left: 15, colors: ["#BDBDBD", "#C62828"] },
 ].map((p) => ({ image: `images/art/${p.slug}.webp`, ...p }));
