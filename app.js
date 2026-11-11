@@ -508,8 +508,12 @@
 
   // ---------- links externos ----------
   function bindLinks() {
-    const links = { instagram: S.instagram, threads: S.threads, email: `mailto:${S.email}`, whatsapp: `https://wa.me/${S.whatsapp}?text=${encodeURIComponent("Olá Icarus Studio! Gostava de pedir um orçamento.")}` };
-    $$("[data-link]").forEach((a) => { a.href = links[a.dataset.link]; });
+    const links = { instagram: S.instagram, threads: S.threads, behance: S.behance, email: `mailto:${S.email}`, whatsapp: `https://wa.me/${S.whatsapp}?text=${encodeURIComponent("Olá Icarus Studio! Gostava de pedir um orçamento.")}` };
+    $$("[data-link]").forEach((a) => {
+      const url = links[a.dataset.link];
+      a.hidden = !url; // rede sem link preenchido em products.js → não aparece
+      if (url) a.href = url;
+    });
   }
 
   // ---------- carrinho ----------

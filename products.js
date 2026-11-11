@@ -11,6 +11,7 @@ window.SITE = {
   whatsapp: "2389893666",          // (+238) 989 36 66
   instagram: "https://instagram.com/icarus_studios7",
   threads: "https://www.threads.net/@icarus_studios7",
+  behance: "",                     // <- link do Behance, ex.: "https://www.behance.net/oseunome"
   email: "herminiltonmiranda12@gmail.com",
   phone: "+2389893666",            // botão "Ligar" no checkout
   shipping: 330,                   // envio fixo para todas as ilhas (CVE)
