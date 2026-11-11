@@ -57,7 +57,10 @@
     const others = P.filter((x) => x !== p).slice(0, 3);
     main.innerHTML = `
       <section class="product">
-        <div class="product__media">${print(p)}</div>
+        <div class="product__media">
+          <div class="product__stage">${print(p)}</div>
+          <figure class="product__mockup"><img src="images/mockups/${p.slug}.webp" alt="${esc(p.title)} — mockup numa parede" loading="lazy" onerror="this.parentNode.remove()"></figure>
+        </div>
         <div class="product__info">
           <div class="product__block">
             <nav class="crumbs" aria-label="Navegação"><a href="#/">Início</a><span>/</span><a href="#/">Coleção</a><span>/</span><span>${esc(p.title)}</span></nav>
