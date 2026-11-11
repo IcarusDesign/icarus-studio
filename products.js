@@ -17,9 +17,9 @@ window.SITE = {
   deliveryDays: 7,                 // prazo de entrega
   islands: ["Santiago", "São Vicente", "Santo Antão", "São Nicolau", "Sal", "Boa Vista", "Maio", "Fogo", "Brava"],
   sizes: [
-    { label: "A4 / 21x30 cm", price: 2750 },
-    { label: "A3 / 30x42 cm", price: 4400 },
-    { label: "50x70 cm",      price: 7150 },
+    { label: "A4 / 21x30 cm", price: 2650 },
+    { label: "A3 / 30x42 cm", price: 4200 },
+    { label: "50x70 cm",      price: 6150 },
   ],
 };
 
