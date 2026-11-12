@@ -9,6 +9,7 @@
  */
 
 const SHEET_NAME = 'Pedidos';
+const NEWS_SHEET = 'Newsletter';
 const FOLDER_NAME = 'Icarus Studio — Comprovativos';
 const NOTIFY = true; // false = não enviar emails de aviso
 const MAX_FILE_MB = 5;
@@ -48,6 +49,16 @@ function doPost(e) {
       return json_({ ok: true });
     }
 
+    if (d.action === 'newsletter') {
+      const email = String(d.email || '').trim().toLowerCase().slice(0, 200);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json_({ ok: false, error: 'email inválido' });
+      const ns = newsSheet_();
+      const last = ns.getLastRow();
+      const known = last > 1 && ns.getRange(2, 2, last - 1, 1).getValues().some((r) => r[0] === email);
+      if (!known) ns.appendRow([new Date(), clean_(email), 'Site']);
+      return json_({ ok: true });
+    }
+
     if (d.action === 'status') {
       const row = findRow_(sh, d.ref);
       if (row) sh.getRange(row, COL['Estado']).setValue(clean_(d.status).slice(0, 60));
@@ -82,6 +93,7 @@ function addOrder_(sh, d) {
 // o acesso à folha, ao Drive e ao email antes de publicar.
 function autorizar() {
   sheet_();
+  newsSheet_();
   folder_();
   MailApp.getRemainingDailyQuota();
   Logger.log('Autorizado. Agora: Implementar → Gerir implementações → ✏️ → Nova versão.');
@@ -95,6 +107,18 @@ function sheet_() {
     sh.appendRow(HEADERS);
     sh.setFrozenRows(1);
     sh.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
+  }
+  return sh;
+}
+
+function newsSheet_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sh = ss.getSheetByName(NEWS_SHEET);
+  if (!sh) sh = ss.insertSheet(NEWS_SHEET);
+  if (sh.getLastRow() === 0) {
+    sh.appendRow(['Data', 'Email', 'Origem']);
+    sh.setFrozenRows(1);
+    sh.getRange(1, 1, 1, 3).setFontWeight('bold');
   }
   return sh;
 }

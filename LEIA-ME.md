@@ -63,6 +63,8 @@ Teste: abra o URL no navegador — tem de aparecer `{"ok":true,"service":"Icarus
 Se aparecer "Função de script não encontrada: doPost", o código não foi guardado antes de publicar
 (repita os passos 3 e "Se alterar o Code.gs depois").
 
+**Newsletter:** os emails subscritos no rodapé do site ficam no separador **Newsletter** da mesma folha (sem repetidos).
+
 **Campanhas:** filtre a coluna *Aceita campanhas = Sim* para ter a lista de
 contactos que autorizaram receber novidades. Só envie campanhas a essas pessoas.
 

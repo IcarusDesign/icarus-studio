@@ -587,10 +587,20 @@
   });
 
   // ---------- newsletter ----------
-  $("[data-news]").addEventListener("submit", (e) => {
+  $("[data-news]").addEventListener("submit", async (e) => {
     e.preventDefault();
-    e.target.reset();
-    $("[data-news-msg]").textContent = "Obrigado! Vais receber as novidades em primeira mão.";
+    const form = e.target, msg = $("[data-news-msg]"), btn = $("button", form);
+    const email = $("#news-email", form).value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { msg.textContent = "Escreve um email válido."; return; }
+    btn.disabled = true; msg.textContent = "A enviar…";
+    const r = await sendDB({ action: "newsletter", email, website: form.website.value });
+    btn.disabled = false;
+    if (r.ok) {
+      form.reset();
+      msg.textContent = "Obrigado! Vais receber as novidades em primeira mão.";
+    } else {
+      msg.innerHTML = `Não foi possível subscrever agora. Tenta de novo ou <a href="mailto:${esc(S.email)}?subject=${encodeURIComponent("Newsletter Icarus Studio")}&body=${encodeURIComponent("Quero subscrever: " + email)}">envia-nos um email</a>.`;
+    }
   });
 
   // ---------- selo ----------
