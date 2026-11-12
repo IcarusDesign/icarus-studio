@@ -6,7 +6,7 @@
 // ============================================================
 window.PAYMENT = {
   bank: {
-    holder:  "Herminilton",   // Nome do Titular
+    holder:  "Hermenilton",   // Nome do Titular
     bank:    "BCN",   // BANCO
     account: "7936959",   // NUMERO DA CONTA
     nib:     "0004 0000 07936959101 54",   // NIB
