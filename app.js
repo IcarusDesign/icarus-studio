@@ -44,15 +44,15 @@
 
   // ---------- views ----------
   function viewHome() {
-    document.title = "ICARUS STUDIO";
-    main.innerHTML = `<h1 class="sr-only">Icarus Studio — Prints de arte</h1>
+    document.title = "ICARUS STUDIOS";
+    main.innerHTML = `<h1 class="sr-only">Icarus Studios — Prints de arte</h1>
       <section class="grid">${P.map(card).join("")}</section>`;
   }
 
   function viewProduct(slug) {
     const p = P.find((x) => x.slug === slug);
     if (!p) return viewHome();
-    document.title = `${p.title} | ICARUS STUDIO`;
+    document.title = `${p.title} | ICARUS STUDIOS`;
     let sel = 0;
     const others = P.filter((x) => x !== p).slice(0, 3);
     main.innerHTML = `
@@ -105,12 +105,12 @@
   }
 
   function viewAbout() {
-    document.title = "Sobre | ICARUS STUDIO";
+    document.title = "Sobre | ICARUS STUDIOS";
     main.innerHTML = `
       <div class="page-head"><nav class="crumbs"><a href="#/">Início</a><span>/</span><span>Sobre</span></nav><h1>Sobre</h1></div>
       <section class="about">
         <div class="about__text">
-          <p>Somos a Icarus Studio, um estúdio de branding e ilustração digital nascido na Praia, Cabo Verde.</p>
+          <p>Somos a Icarus Studios, um estúdio de branding e ilustração digital nascido na Praia, Cabo Verde.</p>
           <p>O nosso trabalho junta retrato, cor e cultura: rostos construídos em planos de cor, texturas quentes e referências que reconheces — da música kriola ao desporto, da rua às capas de festival. Cada peça celebra a identidade cabo-verdiana e africana com uma linguagem gráfica contemporânea.</p>
           <p>Essas obras não ficam só no ecrã. Ganham vida como prints — feitos para viver numa parede, com qualidade à altura da arte. É aqui que uma imagem deixa de ser só uma imagem e passa a ser algo teu.</p>
           <p>Tudo sai nos nossos termos: edições limitadas e autografadas pelo autor, e trabalhos por encomenda, enviados para todas as ilhas de Cabo Verde.</p>
@@ -125,7 +125,7 @@
           <a class="btn-line" data-link="whatsapp" target="_blank" rel="noopener">Pedir orçamento</a>
         </div>
         <div class="about__media">
-          <img src="images/about.jpg" alt="Icarus Studio" onerror="this.outerHTML=this.nextElementSibling.innerHTML"><template><img class="big-mark" src="images/logo-wings.webp" alt="Logo Icarus"></template>
+          <img src="images/about.jpg" alt="Icarus Studios" onerror="this.outerHTML=this.nextElementSibling.innerHTML"><template><img class="big-mark" src="images/logo-wings.webp" alt="Logo Icarus"></template>
         </div>
       </section>`;
   }
@@ -137,9 +137,9 @@
     termos: {
       title: "Termos de Serviço",
       body: () => `
-        <p>Ao usar este site e fazer uma encomenda à Icarus Studio, aceitas os termos abaixo.</p>
+        <p>Ao usar este site e fazer uma encomenda à Icarus Studios, aceitas os termos abaixo.</p>
         <h2>1. Sobre nós</h2>
-        <p>A Icarus Studio é um estúdio de branding e ilustração digital sediado na Praia, Cabo Verde. Contacto: ${mail()} · ${wa()}.</p>
+        <p>A Icarus Studios é um estúdio de branding e ilustração digital sediado na Praia, Cabo Verde. Contacto: ${mail()} · ${wa()}.</p>
         <h2>2. Encomendas</h2>
         <p>As encomendas são feitas no checkout do site. O pagamento é feito por transferência bancária e a encomenda só fica confirmada depois de recebermos o comprovativo (carregado no site ou enviado pelo WhatsApp) e de confirmarmos o pagamento.</p>
         <h2>3. Preços</h2>
@@ -147,7 +147,7 @@
         <h2>4. Produção</h2>
         <p>Cada print é impresso por encomenda. Pequenas diferenças de cor entre o ecrã e o papel são normais e não são consideradas defeito.</p>
         <h2>5. Direitos de autor</h2>
-        <p>Todas as artes, ilustrações e marcas apresentadas neste site são propriedade da Icarus Studio. A compra de um print dá-te direito a uso pessoal da peça física. Não é permitido reproduzir, digitalizar, revender ou usar as imagens para fins comerciais sem autorização escrita.</p>
+        <p>Todas as artes, ilustrações e marcas apresentadas neste site são propriedade da Icarus Studios. A compra de um print dá-te direito a uso pessoal da peça física. Não é permitido reproduzir, digitalizar, revender ou usar as imagens para fins comerciais sem autorização escrita.</p>
         <h2>6. Trabalhos por encomenda</h2>
         <p>Projetos de branding, ilustração e retratos personalizados têm orçamento, prazos e condições próprias, acordadas caso a caso antes do início do trabalho.</p>
         <h2>7. Alterações</h2>
@@ -205,7 +205,7 @@
 
   function viewPolicy(key) {
     const p = POLICIES[key];
-    document.title = `${p.title} | ICARUS STUDIO`;
+    document.title = `${p.title} | ICARUS STUDIOS`;
     main.innerHTML = `
       <div class="page-head"><nav class="crumbs"><a href="#/">Início</a><span>/</span><span>${p.title}</span></nav><h1>${p.title}</h1></div>
       <article class="policy">${p.body()}<p class="policy__updated">Última atualização: novembro de 2026</p></article>`;
@@ -274,7 +274,7 @@
       <p class="help__title">Dúvidas sobre o pedido?</p>
       <div class="help__btns">
         <a class="btn-line btn-icon" href="tel:${S.phone}">${ICON.phone}Ligar</a>
-        <a class="btn-line btn-icon" href="${waLink("Olá Icarus Studio! Tenho uma dúvida sobre a minha encomenda.")}" target="_blank" rel="noopener">${ICON.wa}WhatsApp</a>
+        <a class="btn-line btn-icon" href="${waLink("Olá Icarus Studios! Tenho uma dúvida sobre a minha encomenda.")}" target="_blank" rel="noopener">${ICON.wa}WhatsApp</a>
       </div>
     </div>`;
 
@@ -300,7 +300,7 @@
   const coHead = (n) => `<div class="page-head"><nav class="crumbs"><a href="#/">Início</a><span>/</span><span>Checkout</span></nav><h1>Checkout</h1>${steps(n)}</div>`;
 
   function viewCheckout() {
-    document.title = "Checkout | ICARUS STUDIO";
+    document.title = "Checkout | ICARUS STUDIOS";
     const pending = store.get("icarus-order", null);
     const done = store.get("icarus-done", null);
     if (pending && pending.sig === cartSig() && cart.length) return checkoutPay(pending);
@@ -331,7 +331,7 @@
             </select>
           </label>
           <label class="field"><span>Endereço de entrega *</span><textarea name="address" rows="3" autocomplete="street-address" placeholder="Cidade, zona, rua, nº da casa e um ponto de referência" required>${esc(saved.address || "")}</textarea></label>
-          <label class="check"><input type="checkbox" name="marketing" ${saved.marketing ? "checked" : ""}><span>Quero receber novidades, novos drops e campanhas da Icarus Studio.</span></label>
+          <label class="check"><input type="checkbox" name="marketing" ${saved.marketing ? "checked" : ""}><span>Quero receber novidades, novos drops e campanhas da Icarus Studios.</span></label>
           <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
           <p class="co-error" data-co-error role="alert"></p>
           <button class="btn-black" type="submit">Continuar para pagamento — ${fmt(o.total)}</button>
@@ -372,8 +372,8 @@
 
   // ---------- passo 2: dados bancários + comprovativo ----------
   function checkoutPay(o) {
-    const proofMsg = `Olá Icarus Studio! Segue o comprovativo da transferência.\n\nPedido: #${o.ref}\nNome: ${o.customer.name}\nTotal: ${fmt(o.total)}\n\n${itemsText(o.items)}\n+ Envio: ${fmt(o.shipping)}`;
-    const askBankMsg = `Olá Icarus Studio! Fiz o pedido #${o.ref} (${fmt(o.total)}) e preciso dos dados bancários para a transferência.`;
+    const proofMsg = `Olá Icarus Studios! Segue o comprovativo da transferência.\n\nPedido: #${o.ref}\nNome: ${o.customer.name}\nTotal: ${fmt(o.total)}\n\n${itemsText(o.items)}\n+ Envio: ${fmt(o.shipping)}`;
+    const askBankMsg = `Olá Icarus Studios! Fiz o pedido #${o.ref} (${fmt(o.total)}) e preciso dos dados bancários para a transferência.`;
     const row = (label, value, mono) => `
       <div class="bank__row"><span class="bank__label">${label}</span><span class="bank__value${mono ? " is-mono" : ""}">${esc(value)}</span>
       <button type="button" class="copy" data-copy="${esc(value)}" aria-label="Copiar ${label}">${ICON.copy}Copiar</button></div>`;
@@ -511,7 +511,7 @@
 
   // ---------- links externos ----------
   function bindLinks() {
-    const links = { instagram: S.instagram, threads: S.threads, behance: S.behance, email: `mailto:${S.email}`, whatsapp: `https://wa.me/${S.whatsapp}?text=${encodeURIComponent("Olá Icarus Studio! Gostava de pedir um orçamento.")}` };
+    const links = { instagram: S.instagram, threads: S.threads, behance: S.behance, email: `mailto:${S.email}`, whatsapp: `https://wa.me/${S.whatsapp}?text=${encodeURIComponent("Olá Icarus Studios! Gostava de pedir um orçamento.")}` };
     $$("[data-link]").forEach((a) => {
       const url = links[a.dataset.link];
       a.hidden = !url; // rede sem link preenchido em products.js → não aparece
