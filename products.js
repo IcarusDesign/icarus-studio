@@ -52,6 +52,6 @@ window.WEAR = {
   items: [
     { slug: "lenda",      title: "Lenda",      type: "T-shirt", soldOut: true, photos: 5 },
     { slug: "cabo-verde", title: "Cabo Verde", type: "T-shirt", soldOut: true, photos: 3 },
-    { slug: "athxikin",   title: "Athxikin",   type: "T-shirt", soldOut: true, photos: 4 },
+    { slug: "athxikin",   title: "Athxikin",   type: "T-shirt", soldOut: true, photos: 3 },
   ].map((w) => ({ ...w, images: Array.from({ length: w.photos }, (_, i) => `images/wear/${w.slug}-${i + 1}.webp`) })),
 };
