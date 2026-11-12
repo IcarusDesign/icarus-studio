@@ -10,6 +10,8 @@
 
 const SHEET_NAME = 'Pedidos';
 const NEWS_SHEET = 'Newsletter';
+const WEAR_SHEET = 'Icarus Wear';
+const WEAR_HEADERS = ['Data', 'Email', 'Peça', 'Pedido', 'Tamanho', 'Mensagem', 'Estado'];
 const FOLDER_NAME = 'Icarus Studio — Comprovativos'; // nome da pasta já criada no Drive (mudar aqui cria uma pasta nova)
 const NOTIFY = true; // false = não enviar emails de aviso
 const MAX_FILE_MB = 5;
@@ -59,6 +61,17 @@ function doPost(e) {
       return json_({ ok: true });
     }
 
+    if (d.action === 'wear') {
+      const email = String(d.email || '').trim().toLowerCase().slice(0, 200);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json_({ ok: false, error: 'email inválido' });
+      const ws = tab_(WEAR_SHEET, WEAR_HEADERS);
+      ws.appendRow([new Date(), clean_(email), clean_(d.piece).slice(0, 80), clean_(d.kind).slice(0, 40),
+        clean_(d.size).slice(0, 10), clean_(d.message).slice(0, 600), 'Novo']);
+      notify_(`Icarus Wear — ${String(d.kind || '').slice(0, 40)}: ${String(d.piece || '').slice(0, 80)}`,
+        `${email}\nTamanho: ${d.size || '—'}\n\n${String(d.message || '').slice(0, 600)}\n\n${ws.getParent().getUrl()}`);
+      return json_({ ok: true });
+    }
+
     if (d.action === 'status') {
       const row = findRow_(sh, d.ref);
       if (row) sh.getRange(row, COL['Estado']).setValue(clean_(d.status).slice(0, 60));
@@ -94,6 +107,7 @@ function addOrder_(sh, d) {
 function autorizar() {
   sheet_();
   newsSheet_();
+  tab_(WEAR_SHEET, WEAR_HEADERS);
   folder_();
   MailApp.getRemainingDailyQuota();
   Logger.log('Autorizado. Agora: Implementar → Gerir implementações → ✏️ → Nova versão.');
@@ -112,13 +126,18 @@ function sheet_() {
 }
 
 function newsSheet_() {
+  return tab_(NEWS_SHEET, ['Data', 'Email', 'Origem']);
+}
+
+// separador com cabeçalho (cria se não existir)
+function tab_(name, headers) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sh = ss.getSheetByName(NEWS_SHEET);
-  if (!sh) sh = ss.insertSheet(NEWS_SHEET);
+  let sh = ss.getSheetByName(name);
+  if (!sh) sh = ss.insertSheet(name);
   if (sh.getLastRow() === 0) {
-    sh.appendRow(['Data', 'Email', 'Origem']);
+    sh.appendRow(headers);
     sh.setFrozenRows(1);
-    sh.getRange(1, 1, 1, 3).setFontWeight('bold');
+    sh.getRange(1, 1, 1, headers.length).setFontWeight('bold');
   }
   return sh;
 }

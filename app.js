@@ -104,6 +104,111 @@
     $("[data-add]", main).addEventListener("click", () => { if (addToCart(p.slug, sel)) openCart(); });
   }
 
+  // ---------- Icarus Wear ----------
+  const W = window.WEAR || { items: [], sizes: [], from: 0 };
+  const wearTags = (w) => `<div class="tags wear-tags">${w.soldOut ? `<span class="tag tag--out">Esgotado</span>` : ""}<span class="tag">Exclusivo</span></div>`;
+  const wearCard = (w) => `
+    <a class="card wear-card reveal${w.soldOut ? " is-out" : ""}" href="#/wear/${w.slug}">
+      <div class="wear-card__img"><img src="${w.images[0]}" alt="${esc(w.title)} — ${esc(w.type)} Icarus Wear" loading="lazy"></div>
+      <h3 class="card__title">${esc(w.title)}</h3>
+      <p class="card__price">${esc(w.type)} · A partir de ${fmt(W.from)}</p>
+      ${wearTags(w)}
+    </a>`;
+
+  // formulário: avisar quando voltar / pedir peça personalizada
+  function wearForm(w) {
+    return `
+      <form class="wear-form" data-wear-form novalidate>
+        <h2 class="wear-form__title">${w ? "Esgotado — queres uma?" : "Avisa-me / Faz o teu pedido"}</h2>
+        <p class="wear-form__lead">${w ? "Esta peça esgotou." : "Todas as peças estão esgotadas de momento."} Deixa o teu email: avisamos-te quando voltar, ou fazemos a tua peça por encomenda.</p>
+        <fieldset class="wear-kind">
+          <legend class="sr-only">O que pretendes</legend>
+          <label><input type="radio" name="kind" value="Avisar quando voltar" checked> Avisa-me quando voltar</label>
+          <label><input type="radio" name="kind" value="Quero encomendar"> Quero fazer o meu pedido</label>
+        </fieldset>
+        <label class="field"><span>Email</span><input type="email" name="email" required autocomplete="email" maxlength="200" placeholder="o-teu@email.com"></label>
+        ${w ? "" : `<label class="field"><span>Peça <em>(opcional)</em></span><select name="piece"><option value="">Qualquer peça</option>${W.items.map((x) => `<option>${esc(x.title)}</option>`).join("")}</select></label>`}
+        <label class="field"><span>Tamanho <em>(opcional)</em></span><select name="size"><option value="">—</option>${W.sizes.map((s) => `<option>${s}</option>`).join("")}</select></label>
+        <label class="field"><span>Mensagem <em>(opcional)</em></span><textarea name="message" rows="3" maxlength="600" placeholder="Cor, quantidade, nome ou ideia para personalizar…"></textarea></label>
+        <input class="sr-only" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn-black" type="submit">Enviar</button>
+        <p class="wear-form__msg" data-wear-msg aria-live="polite">Usamos o teu email só para responder a este pedido.</p>
+      </form>`;
+  }
+
+  function bindWearForm(w) {
+    const form = $("[data-wear-form]", main);
+    if (!form) return;
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const msg = $("[data-wear-msg]", form), btn = $("button[type=submit]", form), f = form.elements;
+      const email = f.email.value.trim();
+      const field = f.email.closest(".field");
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { field.classList.add("is-bad"); msg.textContent = "Escreve um email válido."; f.email.focus(); return; }
+      field.classList.remove("is-bad");
+      const data = {
+        action: "wear", email, website: f.website.value,
+        piece: w ? w.title : (f.piece.value || "Qualquer peça"),
+        kind: f.kind.value, size: f.size.value, message: f.message.value.trim(),
+      };
+      btn.disabled = true; msg.textContent = "A enviar…";
+      const r = await sendDB(data);
+      btn.disabled = false;
+      if (r.ok) {
+        form.reset();
+        msg.textContent = data.kind === "Quero encomendar"
+          ? "Pedido recebido! Vamos contactar-te por email com os detalhes e o preço."
+          : "Feito! Avisamos-te por email quando esta peça voltar.";
+      } else {
+        const txt = `Olá Icarus Studios! ${data.kind === "Quero encomendar" ? "Quero encomendar" : "Avisem-me quando voltar"}: ${data.piece}${data.size ? ` (${data.size})` : ""}. ${data.message}`.trim();
+        msg.innerHTML = `Não foi possível enviar agora. <a href="https://wa.me/${S.whatsapp}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Envia pelo WhatsApp</a>.`;
+      }
+    });
+  }
+
+  function viewWear() {
+    document.title = "Icarus Wear | ICARUS STUDIOS";
+    main.innerHTML = `
+      <div class="page-head"><nav class="crumbs"><a href="#/">Início</a><span>/</span><span>Icarus Wear</span></nav><h1>Icarus Wear</h1></div>
+      <p class="wear-intro">Camisolas e hoodies personalizados e exclusivos, desenhados pela Icarus Studios. Peças feitas em pequenas quantidades, a partir de <strong>${fmt(W.from)}</strong>.</p>
+      <section class="grid">${W.items.map(wearCard).join("")}</section>
+      <section class="wear-signup">${wearForm(null)}</section>`;
+    bindWearForm(null);
+  }
+
+  function viewWearItem(slug) {
+    const w = W.items.find((x) => x.slug === slug);
+    if (!w) return viewWear();
+    document.title = `${w.title} | Icarus Wear`;
+    const others = W.items.filter((x) => x !== w);
+    main.innerHTML = `
+      <section class="product">
+        <div class="product__media wear-media">
+          ${w.images.map((src, i) => `<figure class="wear-shot"><img src="${src}" alt="${esc(w.title)} — foto ${i + 1}" ${i ? 'loading="lazy"' : ""}></figure>`).join("")}
+        </div>
+        <div class="product__info">
+          <div class="product__block">
+            <nav class="crumbs" aria-label="Navegação"><a href="#/">Início</a><span>/</span><a href="#/wear">Icarus Wear</a><span>/</span><span>${esc(w.title)}</span></nav>
+            <h1 class="product__title">${esc(w.title)}</h1>
+            ${wearTags(w)}
+            <p class="product__ship">${esc(w.type)} personalizada e exclusiva · Envio para todas as ilhas.</p>
+            <p class="product__price">A partir de ${fmt(W.from)}</p>
+            <button class="btn-black" type="button" disabled>${w.soldOut ? "Esgotado" : "Disponível em breve"}</button>
+          </div>
+          <div class="product__block">${wearForm(w)}</div>
+          <div class="product__block">
+            <div class="acc">
+              <details><summary>Detalhes</summary><p>Peça personalizada e exclusiva da Icarus Studios, produzida em pequenas quantidades. O preço final depende do modelo (camisola ou hoodie) e da personalização.</p></details>
+              <details><summary>Tamanhos</summary><p>Disponível de ${W.sizes[0]} a ${W.sizes[W.sizes.length - 1]}. Se tiveres dúvidas sobre o tamanho, diz-nos na mensagem.</p></details>
+              <details><summary>Envio</summary><p>Enviamos para todas as ilhas de Cabo Verde. Ver <a href="#/envios">Política de Envio</a>.</p></details>
+            </div>
+          </div>
+        </div>
+      </section>
+      ${others.length ? `<section class="related"><h2>Mais Icarus Wear</h2><div class="grid">${others.map(wearCard).join("")}</div></section>` : ""}`;
+    bindWearForm(w);
+  }
+
   function viewAbout() {
     document.title = "Sobre | ICARUS STUDIOS";
     main.innerHTML = `
@@ -190,6 +295,7 @@
           <li><strong>Checkout:</strong> nome, telefone, email (opcional), ilha e endereço de entrega, os artigos encomendados e o comprovativo de transferência que carregares.</li>
           <li><strong>Campanhas:</strong> se marcares a opção no checkout, guardamos que aceitas receber novidades e campanhas.</li>
           <li><strong>Newsletter:</strong> o email que nos deixas, se subscreveres.</li>
+          <li><strong>Icarus Wear:</strong> o email, a peça, o tamanho e a mensagem que deixas no formulário "Avisa-me / Faz o teu pedido", usados só para responder a esse pedido.</li>
           <li><strong>No teu dispositivo:</strong> o site guarda localmente o carrinho, os dados do formulário (para não teres de os escrever outra vez) e a tua escolha sobre cookies. Estes dados ficam no teu navegador.</li>
         </ul>
         <h2>Como usamos os dados</h2>
@@ -486,12 +592,14 @@
     const h = location.hash.replace(/^#\/?/, "");
     const [a, b] = h.split("/");
     if (a === "p") viewProduct(b);
+    else if (a === "wear") b ? viewWearItem(b) : viewWear();
     else if (a === "about") viewAbout();
     else if (POLICIES[a]) viewPolicy(a);
     else if (a === "checkout") viewCheckout();
     else viewHome();
     $("[data-badge]")?.classList.toggle("is-hidden", a === "checkout");
-    $$("[data-nav]").forEach((n) => n.classList.toggle("is-active", (n.dataset.nav === "about") === (a === "about") && (a === "about" || !a)));
+    const navKey = a === "about" || a === "wear" ? a : !a ? "home" : "";
+    $$("[data-nav]").forEach((n) => n.classList.toggle("is-active", n.dataset.nav === navKey));
     bindLinks();
     observe();
     closeCart();
@@ -616,7 +724,7 @@
   // ---------- menu mobile ----------
   const mn = document.createElement("nav");
   mn.className = "mobile-nav"; mn.setAttribute("aria-label", "Menu");
-  mn.innerHTML = `<a href="#/">Início</a><a href="#/about">Sobre</a>`;
+  mn.innerHTML = `<a href="#/">Início</a><a href="#/wear">Icarus Wear</a><a href="#/about">Sobre</a>`;
   $(".header").after(mn);
 
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";

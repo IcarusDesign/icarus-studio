@@ -41,3 +41,17 @@ window.PRODUCTS = [
   { slug: "e-22",              title: "E-22",              edition: 15, left: 15, colors: ["#F4E9DC", "#1E5AA8"] },
   { slug: "irmandade",         title: "Irmandade",         edition: 15, left: 15, colors: ["#D6D2CB", "#3A3530"] },
 ].map((p) => ({ image: `images/art/${p.slug}.webp`, ...p }));
+
+// ============================================================
+//  ICARUS WEAR — camisolas e hoodies (fotos em /images/wear)
+//  soldOut: true = ESGOTADO (mostra o formulário "avisa-me / encomenda")
+// ============================================================
+window.WEAR = {
+  from: 4500,                                  // "a partir de" (CVE)
+  sizes: ["S", "M", "L", "XL", "XXL"],
+  items: [
+    { slug: "lenda",      title: "Lenda",      type: "T-shirt", soldOut: true, photos: 5 },
+    { slug: "cabo-verde", title: "Cabo Verde", type: "T-shirt", soldOut: true, photos: 3 },
+    { slug: "athxikin",   title: "Athxikin",   type: "T-shirt", soldOut: true, photos: 4 },
+  ].map((w) => ({ ...w, images: Array.from({ length: w.photos }, (_, i) => `images/wear/${w.slug}-${i + 1}.webp`) })),
+};
