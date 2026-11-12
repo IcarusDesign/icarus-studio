@@ -195,7 +195,7 @@
         <h2>Como usamos os dados</h2>
         <p>Usamos os teus dados para tratar e entregar as encomendas, confirmar pagamentos e responder a mensagens. Só te enviamos campanhas e novidades se tiveres dado autorização no checkout ou na newsletter. Não vendemos nem partilhamos os teus dados com terceiros, exceto o necessário para a entrega.</p>
         <h2>Onde ficam guardados</h2>
-        <p>Os pedidos e comprovativos são guardados numa conta Google (Google Sheets e Google Drive) gerida pela Icarus Studio. Os comprovativos servem apenas para confirmar o pagamento.</p>
+        <p>Os pedidos e comprovativos são guardados numa conta Google gerida pela Icarus Studios. Os comprovativos servem apenas para confirmar o pagamento.</p>
         <h2>Serviços de terceiros</h2>
         <p>O contacto pode ser feito pelo WhatsApp, que tem a sua própria política de privacidade. O site é alojado no GitHub Pages e usa tipos de letra do Google Fonts.</p>
         <h2>Os teus direitos</h2>
