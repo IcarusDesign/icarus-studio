@@ -599,7 +599,7 @@
       form.reset();
       msg.textContent = "Obrigado! Vais receber as novidades em primeira mão.";
     } else {
-      msg.innerHTML = `Não foi possível subscrever agora. Tenta de novo ou <a href="mailto:${esc(S.email)}?subject=${encodeURIComponent("Newsletter Icarus Studio")}&body=${encodeURIComponent("Quero subscrever: " + email)}">envia-nos um email</a>.`;
+      msg.innerHTML = `Não foi possível subscrever agora. Tenta de novo ou <a href="mailto:${esc(S.email)}?subject=${encodeURIComponent("Newsletter Icarus Studios")}&body=${encodeURIComponent("Quero subscrever: " + email)}">envia-nos um email</a>.`;
     }
   });
 

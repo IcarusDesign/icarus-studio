@@ -1,5 +1,5 @@
 /**
- * ICARUS STUDIO — Base de dados de pedidos
+ * ICARUS STUDIOS — Base de dados de pedidos
  * ------------------------------------------------------------
  * Guarda cada pedido do site numa folha de cálculo (Google Sheets)
  * e os comprovativos numa pasta do Google Drive.
@@ -10,7 +10,7 @@
 
 const SHEET_NAME = 'Pedidos';
 const NEWS_SHEET = 'Newsletter';
-const FOLDER_NAME = 'Icarus Studio — Comprovativos';
+const FOLDER_NAME = 'Icarus Studio — Comprovativos'; // nome da pasta já criada no Drive (mudar aqui cria uma pasta nova)
 const NOTIFY = true; // false = não enviar emails de aviso
 const MAX_FILE_MB = 5;
 const HEADERS = [
@@ -75,7 +75,7 @@ function doPost(e) {
 
 // Abrir o URL no navegador mostra isto (útil para testar se está publicado).
 function doGet() {
-  return json_({ ok: true, service: 'Icarus Studio — pedidos' });
+  return json_({ ok: true, service: 'Icarus Studios — pedidos' });
 }
 
 // ---------- utilitários ----------

@@ -1,4 +1,4 @@
-# Icarus Studio — Site
+# Icarus Studios — Site
 
 Site publicado: https://icarusdesign.github.io/icarus-studio/
 
@@ -59,7 +59,7 @@ Os comprovativos ficam numa pasta do Google Drive. Recebe um email a cada pedido
 6. Copie o **URL da app da Web** (termina em `/exec`).
 7. Em `pagamento.js`, cole-o em `ordersEndpoint: "…"`, guarde e publique.
 
-Teste: abra o URL no navegador — tem de aparecer `{"ok":true,"service":"Icarus Studio — pedidos"}`.
+Teste: abra o URL no navegador — tem de aparecer `{"ok":true,"service":"Icarus Studios — pedidos"}`.
 Se aparecer "Função de script não encontrada: doPost", o código não foi guardado antes de publicar
 (repita os passos 3 e "Se alterar o Code.gs depois").
 
