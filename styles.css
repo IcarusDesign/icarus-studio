@@ -99,7 +99,7 @@ main { outline: none; min-height: 70vh; }
 /* ---------------- Product ---------------- */
 .product { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #555; }
 .product__media { background: #cfcfcf; align-self: start; }
-.product__stage { display: grid; place-items: center; padding: 8% 10%; min-height: calc(100vh - 64px); }
+.product__stage { display: grid; place-items: center; align-content: center; padding: 8% 10%; min-height: calc(100vh - 64px); }
 .product__stage .print { width: min(78%, 520px); }
 .product__mockup { margin: 0; border-top: 1px solid #555; }
 .product__mockup img { display: block; width: 100%; height: auto; }
@@ -356,3 +356,15 @@ main { outline: none; min-height: 70vh; }
 .wear-form__msg { font-size: 12px; margin: 10px 0 0; color: var(--muted); }
 .wear-form__msg a { text-decoration: underline; color: #000; }
 .product__info .wear-tags { margin: 0 0 16px; }
+
+/* ================= LUPA ================= */
+.has-lens img { cursor: crosshair; }
+.product__mockup.has-lens, .wear-shot.has-lens { position: relative; overflow: hidden; }
+.lens {
+  position: absolute; left: 0; top: 0; z-index: 3; width: 210px; height: 210px; border-radius: 50%;
+  pointer-events: none; background-repeat: no-repeat; background-color: var(--paper, #fff);
+  border: 3px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.2), 0 14px 34px rgba(0,0,0,.28);
+  opacity: 0; transform: scale(.6); transition: opacity .15s ease, transform .15s ease;
+}
+.lens.is-on { opacity: 1; transform: scale(1); }
+.zoom-hint { display: flex; align-items: center; gap: 6px; margin: 18px 0 0; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }

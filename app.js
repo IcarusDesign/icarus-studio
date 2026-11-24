@@ -58,7 +58,7 @@
     main.innerHTML = `
       <section class="product">
         <div class="product__media">
-          <div class="product__stage">${print(p)}</div>
+          <div class="product__stage">${print(p)}${zoomHint()}</div>
           <figure class="product__mockup"><img src="images/mockups/${p.slug}.webp" alt="${esc(p.title)} — mockup numa parede" loading="lazy" onerror="this.parentNode.remove()"></figure>
         </div>
         <div class="product__info">
@@ -95,6 +95,8 @@
         <div class="grid">${others.map(card).join("")}</div>
       </section>`;
 
+    $$(".product__stage .print img, .product__mockup img", main).forEach(addLens);
+
     $$(".size", main).forEach((b) => b.addEventListener("click", () => {
       sel = +b.dataset.size;
       $$(".size", main).forEach((x) => x.setAttribute("aria-pressed", x === b));
@@ -102,6 +104,36 @@
       if (!soldOut(p)) $("[data-add]", main).textContent = `Adicionar ao carrinho — ${fmt(S.sizes[sel].price)}`;
     }));
     $("[data-add]", main).addEventListener("click", () => { if (addToCart(p.slug, sel)) openCart(); });
+  }
+
+  // ---------- lupa (passar o rato por cima da imagem) ----------
+  const canHover = window.matchMedia?.("(hover: hover) and (pointer: fine)").matches;
+  const ZOOM = 2.4;
+  const LENS_ICON = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/><path d="M10.5 7.5v6M7.5 10.5h6"/></svg>`;
+  const zoomHint = () => canHover ? `<p class="zoom-hint">${LENS_ICON}Passa o rato por cima para ampliar</p>` : "";
+  function addLens(img) {
+    if (!canHover || !img) return;
+    const box = img.parentElement;
+    const lens = document.createElement("div");
+    lens.className = "lens";
+    lens.setAttribute("aria-hidden", "true");
+    box.classList.add("has-lens");
+    box.appendChild(lens);
+    const hide = () => lens.classList.remove("is-on");
+    box.addEventListener("mousemove", (e) => {
+      if (!img.isConnected || !img.naturalWidth) return hide();
+      const r = img.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      if (x < 0 || y < 0 || x > r.width || y > r.height) return hide();
+      const b = box.getBoundingClientRect(), L = lens.offsetWidth / 2;
+      lens.style.left = `${e.clientX - b.left - L}px`;
+      lens.style.top = `${e.clientY - b.top - L}px`;
+      lens.style.backgroundImage = `url("${img.currentSrc || img.src}")`;
+      lens.style.backgroundSize = `${r.width * ZOOM}px ${r.height * ZOOM}px`;
+      lens.style.backgroundPosition = `${L - x * ZOOM}px ${L - y * ZOOM}px`;
+      lens.classList.add("is-on");
+    });
+    box.addEventListener("mouseleave", hide);
   }
 
   // ---------- Icarus Wear ----------
@@ -207,6 +239,7 @@
       </section>
       ${others.length ? `<section class="related"><h2>Mais Icarus Wear</h2><div class="grid">${others.map(wearCard).join("")}</div></section>` : ""}`;
     bindWearForm(w);
+    $$(".wear-shot img", main).forEach(addLens);
   }
 
   function viewAbout() {
