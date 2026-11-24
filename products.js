@@ -25,6 +25,8 @@ window.SITE = {
 };
 
 window.PRODUCTS = [
+  { slug: "ildo-lobo",         title: "Ildo Lobo",         edition: 10, left: 9, colors: ["#F2A23A", "#3B2414"] },
+  { slug: "miss-perfumada",    title: "Miss Perfumada",    edition: 10, left: 8, colors: ["#2A1E33", "#E8A35A"] },
   { slug: "raiz",              title: "Raiz",              edition: 30, left: 19, colors: ["#F7B21B", "#E8620C"] },
   { slug: "kampion",           title: "Kampion",           edition: 30, left: 24, colors: ["#1E3FA8", "#F9C80E"] },
   { slug: "noites",            title: "Noites",            edition: 30, left: 25, colors: ["#F9A825", "#6A2C91"] },
@@ -40,8 +42,6 @@ window.PRODUCTS = [
   { slug: "sab-boy",           title: "Sab Boy",           edition: 15, left: 15, colors: ["#EFE6D2", "#C1440E"] },
   { slug: "e-22",              title: "E-22",              edition: 15, left: 15, colors: ["#F4E9DC", "#1E5AA8"] },
   { slug: "irmandade",         title: "Irmandade",         edition: 15, left: 15, colors: ["#D6D2CB", "#3A3530"] },
-  { slug: "ildo-lobo",         title: "Ildo Lobo",         edition: 10, left: 9, colors: ["#F2A23A", "#3B2414"] },
-  { slug: "miss-perfumada",    title: "Miss Perfumada",    edition: 10, left: 8, colors: ["#2A1E33", "#E8A35A"] },
 ].map((p) => ({ image: `images/art/${p.slug}.webp`, ...p }));
 
 // ============================================================
